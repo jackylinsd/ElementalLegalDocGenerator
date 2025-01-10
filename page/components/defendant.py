@@ -13,7 +13,8 @@ class Respondent:
 
     def _respondent_people_info(self):
         """生成自然人答辩人的输入组件"""
-        st.subheader("答辩人（自然人）") if self.case_type not in CASE_COMPLAINT_RESPONDENTS_NO_NP else st.subheader("答辩人")
+        header = "答辩人（自然人）" if self.case_type not in CASE_COMPLAINT_RESPONDENTS_NO_NP else "答辩人" 
+        st.subheader(header)
 
         respondent = {
             "name": st.text_input("姓名", key="respondent_people_name", placeholder="请输入答辩人姓名"),
@@ -30,7 +31,8 @@ class Respondent:
 
     def _respondent_company_info(self):
         """生成法人/非法人组织答辩人的输入组件"""
-        st.subheader("答辩人（法人、非法人组织）")
+        header = "答辩人（法人、非法人组织）" if self.case_type not in CASE_SPECIAL_RESPONDENTS_COMPANY_TYPE else CASE_SPECIAL_RESPONDENTS_COMPANY_TYPE[self.case_type]
+        st.subheader(header)
 
         respondent = {
             "name": st.text_input("名称", key="respondent_company_name", placeholder="请输入答辩人名称"),
