@@ -231,6 +231,9 @@ class BaseCaseFormatter:
         for party in parties:
             if not isinstance(party, dict):
                 continue  # 跳过非字典类型的当事人
+
+            if party.get('type'):  # 跳过没有姓名的当事人
+                continue
             
             for field, label in fields.items():
                 value = party.get(field)
@@ -248,6 +251,9 @@ class BaseCaseFormatter:
             
             info_lines.append("")  # 添加空行分隔不同当事人
         
+        if len(info_lines) == 0:
+            return "姓名：\n性别：男☐ 女☐\n出生日期：   年   月   日\n民族：\n工作单位：\n职务：\n联系电话：\n住所地（户籍所在地）：\n经常居住地："
+
         return "\n".join(info_lines).strip()  # 去除末尾的空行
 
     @staticmethod
@@ -256,66 +262,75 @@ class BaseCaseFormatter:
         if not isinstance(company_data, dict):
             return ""
         
-        # 构建基础信息
-        info_lines = [
-            f"名称：{company_data.get('name', '')}",
-            f"住所地（主要办事机构所在地）：{company_data.get('address', '')}",
-            f"注册地/登记地：{company_data.get('registered_address', '')}",
-            (f"法定代表人/主要负责人：{company_data.get('legal_representative', '')} "
-            f"职务：{company_data.get('position', '')} "
-            f"联系电话：{company_data.get('phone', '')}"),
-            f"统一社会信用代码：{company_data.get('unified_code', '')}"
-        ]
+        party_keys = {"plaintiffs", "defendants", "third_parties", "respondents"}
+        if not party_keys.intersection(company_data.keys()):
+            return ""
         
-        # 处理企业类型
-        company_types = {
-            "有限责任公司": "有限责任公司",
-            "股份有限公司": "股份有限公司",
-            "上市公司": "上市公司",
-            "其他企业法人": "其他企业法人",
-            "事业单位": "事业单位",
-            "社会团体": "社会团体",
-            "基金会": "基金会",
-            "社会服务机构": "社会服务机构",
-            "机关法人": "机关法人",
-            "农村集体经济组织法人": "农村集体经济组织法人",
-            "城镇农村的合作经济组织法人": "城镇农村的合作经济组织法人",
-            "基层群众性自治组织法人": "基层群众性自治组织法人",
-            "个人独资企业": "个人独资企业",
-            "合伙企业": "合伙企业",
-            "不具有法人资格的专业服务机构": "不具有法人资格的专业服务机构"
+        parties = next((company_data.get(key) for key in party_keys if company_data.get(key)), [])
+        if not isinstance(parties, list):
+            return ""
+        
+        # 提取字段映射表，便于维护和扩展
+        fields = {
+            'name': '名称',
+            'address': '住所地（主要办事机构所在地）',
+            'registered_address': '注册地/登记地',
+            'legal_representative': '法定代表人/主要负责人',
+            'position': '职务',
+            'phone': '联系电话',
+            'unified_code': '统一社会信用代码'
         }
-        
-        type_line = []
-        current_type = company_data.get('type', '')
-        
-        for type_key, type_name in company_types.items():
-            checkbox = "☑" if type_key == current_type else "☐"
-            type_line.append(f"{type_name}{checkbox}")
-        
-        # 构建所有权类型行
-        ownership_types = {
-            "国有": "国有",
-            "民营": "民营",
-            "国有(控股)": "（控股",
-            "国有(参股)": "参股"
-        }
-        
-        ownership_line = []
-        current_ownership = company_data.get('ownership', '')
-        
-        for ownership_key, ownership_name in ownership_types.items():
-            checkbox = "☑" if ownership_key == current_ownership else "☐"
-            ownership_line.append(f"{checkbox}")
-        
-        # 将类型信息分成多行，保持与图片格式一致
-        type_lines = [
-            f"类型：{' '.join(type_line[:4])}",
-            f"      {' '.join(type_line[4:8])}",
-            f"      {' '.join(type_line[8:12])}",
-            f"      {' '.join(type_line[12:])}",
-            f"      国有{ownership_line[0]}・（控股{ownership_line[2]} 参股{ownership_line[3]}）民营{ownership_line[1]}"
+            # 处理企业类型
+        company_types = [
+            "有限责任公司",
+            "股份有限公司",
+            "上市公司",
+            "其他企业法人",
+            "事业单位",
+            "社会团体",
+            "基金会",
+            "社会服务机构",
+            "机关法人",
+            "农村集体经济组织法人",
+            "城镇农村的合作经济组织法人",
+            "基层群众性自治组织法人",
+            "个人独资企业",
+            "合伙企业",
+            "不具有法人资格的专业服务机构"
         ]
+
+        info_lines = []
+        type_lines = ['类型：']
+        for party in parties:
+            if not isinstance(party, dict):
+                continue  # 跳过非字典类型的当事人
+
+            if party.get('gender'):  # 跳过自然人
+                continue
+            for field, label in fields.items():
+                value = party.get(field)
+                if value is None:
+                    value = ''                
+                info_lines.append(f"{label}：{value}")   
+
+            current_type = party.get('type', '')
+            
+            type_line = ''
+            for t in company_types:
+                checkbox = "☑" if t == current_type else "☐"
+                type_line += f"{t}{checkbox} "
+            
+            type_lines.append(type_line)
+
+            current_ownership = party.get('ownership', '')
+            if current_ownership == '民营':
+                type_lines.append("国有☐ （控股☐参股☐） 民营☑")
+            elif current_ownership == '国有(控股)':            
+                type_lines.append("国有☑ （控股☑参股☐） 民营☐")
+            elif current_ownership == '国有(参股)':
+                type_lines.append("国有☐ （控股☐参股☑） 民营☐")
+            else:
+                type_lines.append("国有☐ （控股☐参股☐） 民营☐")
         
         return "\n".join(info_lines + type_lines)
     @staticmethod

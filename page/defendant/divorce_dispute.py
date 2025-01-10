@@ -14,8 +14,8 @@ CASE_TYPE = '离婚纠纷'
 def respondent_details(thisCase: dict):
     # 1. 对解除婚姻关系的确认和异议
     st.subheader("1. 对解除婚姻关系的确认和异议")
-    q1_options = st.radio(label='', options=["确认", "异议"], key="q1_options", horizontal=True)
-    q1_fact = st.text_area("具体原因", key="q1_fact")
+    q1_options = st.radio(label="对解除婚姻关系的确认和异议", options=["确认", "异议"], key="q1_options", horizontal=True, label_visibility="collapsed")
+    q1_fact = st.text_area(label="具体原因", value="", key="q1_fact", label_visibility="collapsed")
 
     if q1_options == "确认":
         q1_detail = f'确认☑      异议☐\n{q1_fact}'
@@ -25,8 +25,8 @@ def respondent_details(thisCase: dict):
 
     # 2. 对夫妻共同财产诉请的确认和异议
     st.subheader("2. 对夫妻共同财产诉请的确认和异议")
-    q2_options = st.radio(label='',options=["确认", "异议"], key="q2_options", horizontal=True)
-    q2_fact = st.text_area("具体原因", key="q2_fact")
+    q2_options = st.radio(label="对夫妻共同财产诉请的确认和异议", options=["确认", "异议"], key="q2_options", horizontal=True, label_visibility="collapsed")
+    q2_fact = st.text_area(label="具体原因", value="", key="q2_fact", label_visibility="collapsed")
 
     if q2_options == "确认":
         q2_detail = f'确认☑      异议☐\n{q2_fact}'
@@ -36,8 +36,8 @@ def respondent_details(thisCase: dict):
 
     # 3. 对夫妻共同债务诉请的确认和异议
     st.subheader("3. 对夫妻共同债务诉请的确认和异议")
-    q3_options = st.radio(label='',options=["确认", "异议"], key="q3_options", horizontal=True)
-    q3_fact = st.text_area("具体原因", key="q3_fact")
+    q3_options = st.radio(label="对夫妻共同债务诉请的确认和异议", options=["确认", "异议"], key="q3_options", horizontal=True, label_visibility="collapsed")
+    q3_fact = st.text_area(label="具体原因", value="", key="q3_fact", label_visibility="collapsed")
 
     if q3_options == "确认":
         q3_detail = f'确认☑      异议☐\n{q3_fact}'
@@ -47,8 +47,8 @@ def respondent_details(thisCase: dict):
 
     # 4. 对子女直接抚养诉请的确认和异议
     st.subheader("4. 对子女直接抚养诉请的确认和异议")
-    q4_options = st.radio(label='',options=["确认", "异议"], key="q4_options", horizontal=True)
-    q4_fact = st.text_area("具体原因", key="q4_fact")
+    q4_options = st.radio(label="对子女直接抚养诉请的确认和异议", options=["确认", "异议"], key="q4_options", horizontal=True, label_visibility="collapsed")
+    q4_fact = st.text_area(label="具体原因", value="", key="q4_fact", label_visibility="collapsed")
 
     if q4_options == "确认":
         q4_detail = f'确认☑      异议☐\n{q4_fact}'
@@ -58,8 +58,8 @@ def respondent_details(thisCase: dict):
 
     # 5. 对子女抚养费诉请的确认和异议
     st.subheader("5. 对子女抚养费诉请的确认和异议")
-    q5_options = st.radio(label='',options=["确认", "异议"], key="q5_options", horizontal=True)
-    q5_fact = st.text_area("具体原因", key="q5_fact")
+    q5_options = st.radio(label="对子女抚养费诉请的确认和异议", options=["确认", "异议"], key="q5_options", horizontal=True, label_visibility="collapsed")
+    q5_fact = st.text_area(label="具体原因", value="", key="q5_fact", label_visibility="collapsed")
 
     if q5_options == "确认":
         q5_detail = f'确认☑      异议☐\n{q5_fact}'
@@ -69,8 +69,8 @@ def respondent_details(thisCase: dict):
 
     # 6. 对子女探望权诉请的确认和异议
     st.subheader("6. 对子女探望权诉请的确认和异议")
-    q6_options = st.radio(label='',options=["确认", "异议"], key="q6_options", horizontal=True)
-    q6_fact = st.text_area("具体原因", key="q6_fact")
+    q6_options = st.radio(label="对子女探望权诉请的确认和异议", options=["确认", "异议"], key="q6_options", horizontal=True, label_visibility="collapsed")
+    q6_fact = st.text_area(label="具体原因", value="", key="q6_fact", label_visibility="collapsed")
 
     if q6_options == "确认":
         q6_detail = f'确认☑      异议☐\n{q6_fact}'
@@ -80,8 +80,8 @@ def respondent_details(thisCase: dict):
 
     # 7. 对赔偿/补偿/经济帮助的确认和异议
     st.subheader("7. 对赔偿/补偿/经济帮助的确认和异议")
-    q7_options = st.radio(label='',options=["确认", "异议"], key="q7_options", horizontal=True)
-    q7_fact = st.text_area("具体原因", key="q7_fact")
+    q7_options = st.radio(label="对赔偿/补偿/经济帮助的确认和异议", options=["确认", "异议"], key="q7_options", horizontal=True, label_visibility="collapsed")
+    q7_fact = st.text_area(label="具体原因", value="", key="q7_fact", label_visibility="collapsed")
 
     if q7_options == "确认":
         q7_detail = f'确认☑      异议☐\n{q7_fact}'
@@ -91,19 +91,18 @@ def respondent_details(thisCase: dict):
 
     # 8. 其他事由
     st.subheader("8. 其他事由")
-    q8_fact = st.text_area("事由", key="q8_fact")
+    q8_fact = st.text_area(label="其他事由", value="", key="q8_fact", label_visibility="collapsed")
     thisCase.replay_matters.append(q8_fact)
 
     # 9. 答辩的依据
     st.subheader("9. 答辩的依据")
-    q9_fact = st.text_area("法律及司法解释的规定，要写明具体条文", key="q9_fact")
+    q9_fact = st.text_area(label="法律及司法解释的规定，要写明具体条文", value="", key="q9_fact", label_visibility="collapsed")
     thisCase.replay_matters.append(q9_fact)
 
     # 10. 证据清单（可另附页）
     st.subheader("10. 证据清单（可另附页）")
-    q10_fact = st.text_area("证据清单", value='附页', key="q10_fact")
+    q10_fact = st.text_area(label="证据清单", value="附页", key="q10_fact", label_visibility="collapsed")
     thisCase.replay_matters.append(q10_fact)
-
 class DivorceCaseFormatter(BaseCaseFormatter):
     """离婚案件数据格式化器"""
 

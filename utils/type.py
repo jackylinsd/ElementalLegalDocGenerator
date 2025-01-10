@@ -84,11 +84,11 @@ CASE_SPECIAL_RESPONDENTS_COMPANY_TYPE = {
 
 CASE_COMPLAINT_RESPONDENTS_COMPANY = [
     '保证保险合同纠纷',
-    '物业服务合同纠纷',
 ]
 
 CASE_COMPLAINT_RESPONDENTS_BOTH = [
     '保证保险合同纠纷',
+    '物业服务合同纠纷',
     '机动车交通事故责任纠纷',
     '金融借款合同纠纷',
     '买卖合同纠纷',
