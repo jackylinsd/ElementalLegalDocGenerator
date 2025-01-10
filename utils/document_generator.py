@@ -300,7 +300,7 @@ class BaseCaseFormatter:
         ]
 
         info_lines = []
-        type_lines = ['类型：']
+        type_lines = []
         for party in parties:
             if not isinstance(party, dict):
                 continue  # 跳过非字典类型的当事人
@@ -315,7 +315,7 @@ class BaseCaseFormatter:
 
             current_type = party.get('type', '')
             
-            type_line = ''
+            type_line = '类型：'
             for t in company_types:
                 checkbox = "☑" if t == current_type else "☐"
                 type_line += f"{t}{checkbox} "
@@ -332,6 +332,9 @@ class BaseCaseFormatter:
             else:
                 type_lines.append("国有☐ （控股☐参股☐） 民营☐")
         
+        if len(info_lines) == 0:
+            return "名称：\n住所地（主要办事机构所在地）：\n注册地/登记地：\n法定代表人/主要负责人：\n职务：\n联系电话：\n统一社会信用代码：\n类型：有限责任公司☐ 股份有限公司☐ 上市公司☐ 其他企业法人☐ 事业单位☐ 社会团体☐ 基金会☐ 社会服务机构☐ 机关法人☐ 农村集体经济组织法人☐  城镇农村的合作经济组织法人☐ 基层群众性自治组织法人☐ 个人独资企业☐ 合伙企业☐ 不具有法人资格的专业服务机构☐\n国有☐ （控股☐参股☐） 民营☐"
+
         return "\n".join(info_lines + type_lines)
     @staticmethod
     def _format_agents(case_data):
