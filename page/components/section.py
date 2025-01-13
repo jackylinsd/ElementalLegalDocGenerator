@@ -2,6 +2,44 @@ import streamlit as st
 import json
 from datetime import date
 import pandas as pd
+from page.components.jurisdiction_and_preservation import JurisdictionAndPreservation
+
+
+class CommonCasePlaintiff:
+    """案件信息类
+    plaintiff: 原告信息
+    defendant: 被告信息
+    third_party: 第三人信息
+    jurisdiction_and_preservation: 约定管辖和诉讼保全信息
+    reply_matters: 诉讼请求和依据
+    reasons: 事由
+    """
+
+
+    def __init__(self):
+        self.plaintiff = None
+        self.defendant = None
+        self.third_party = None
+        self.jurisdiction_and_preservation = JurisdictionAndPreservation()
+        self.reply_matters = []
+        self.reasons = []
+
+    def to_json(self):
+        """序列化对象到JSON"""
+
+        def default_serializer(obj):
+            if isinstance(obj, date):
+                return obj.isoformat()
+            elif isinstance(obj, pd.DataFrame):
+                return obj.to_dict(orient="records")
+            elif hasattr(obj, "__dict__"):
+                return obj.__dict__
+            return str(obj)
+
+        return json.dumps(self.__dict__, default=default_serializer, indent=4)
+
+
+
 
 
 class CommonCaseRespondent:
@@ -9,8 +47,7 @@ class CommonCaseRespondent:
 
     def __init__(self):
         self.respondent = None
-        self.case_num = None
-        self.replay_matters = []
+        self.reply_matters = []
         self.reasons = []
 
     def to_json(self):

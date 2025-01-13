@@ -58,7 +58,7 @@ class InsuranceCaseFormatter(BaseCaseFormatter):
     """数据格式化器"""
 
     BaseCaseFormatter.case_type = CASE_TYPE
-    BaseCaseFormatter.isComplete = False
+    BaseCaseFormatter.isComplaint = False
 
     @staticmethod
     def format_case(case):

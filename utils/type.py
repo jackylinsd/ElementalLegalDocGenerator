@@ -14,6 +14,8 @@ CASE_CATEGORIES = [
 
 CASE_COMPLAINT_PLAINTIFFS_NO_NP = ["劳动争议纠纷", "离婚纠纷"]
 
+CASE_COMPLAINT_PLAINTIFFS_NO_TP = ["劳动争议纠纷", "离婚纠纷"]
+
 CASE_COMPLAINT_PLAINTIFFS_COMPANY = [
     "保证保险合同纠纷",
     "物业服务合同纠纷",

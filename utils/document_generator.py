@@ -15,7 +15,7 @@ class BaseCaseFormatter:
     """通用案件数据格式化器，用于将案件数据转换为文档模板格式"""
 
     case_type = "通用案件"
-    isComplete = True
+    isComplaint = True
 
     @staticmethod
     def format_case(case):
@@ -48,15 +48,6 @@ class BaseCaseFormatter:
                 "electronic_delivery": BaseCaseFormatter._format_electronic_delivery(case_data),
             }
 
-            # 动态插入第三人信息
-            third_party_info = BaseCaseFormatter._format_party_info(
-                safe_get(case_data, "third_party", default={}))
-            if third_party_info:
-                template_data["party_informations"].append({
-                    "type": "第三人",
-                    "information": third_party_info
-                })
-
             return template_data
 
         except Exception as e:
@@ -68,15 +59,18 @@ class BaseCaseFormatter:
         """格式化当事人信息（通用部分）"""
         party_informations = []
         # print(case_data)
-        # 判断是否为原告或被告
-        plaintiff_case_type = case_data.get("plaintiff", {}).get("case_type", {})
+        plaintiff_case_type = case_data.get(
+            "plaintiff", {}).get("case_type", {})
         is_plaintiff_both = True if plaintiff_case_type in CASE_COMPLAINT_PLAINTIFFS_BOTH else False
         # print(is_plaintiff)
-        respondent_case_type = case_data.get("respondent", {}).get("case_type", {})
+        respondent_case_type = case_data.get(
+            "respondent", {}).get("case_type", {})
         is_respondent_both = True if respondent_case_type in CASE_COMPLAINT_RESPONDENTS_BOTH else False
+
+        is_third_party = True if plaintiff_case_type not in CASE_COMPLAINT_PLAINTIFFS_NO_TP else False
         # print(is_respondent)
 
-        if BaseCaseFormatter.isComplete:
+        if BaseCaseFormatter.isComplaint:
             # 原告部分
             party_informations.append({
                 "type": "原告" if plaintiff_case_type in CASE_COMPLAINT_DEFENDANT_NO_NP else "原告(自然人)",
@@ -86,7 +80,7 @@ class BaseCaseFormatter:
             # 如果 case_type 是原告（法人、非法人组织），插入法人信息
             if is_plaintiff_both:
                 party_informations.append({
-                    "type": "原告（法人、非法人组织）" if plaintiff_case_type not in CASE_SPECIAL_DEFENDANT_COMPANY_TYPE 
+                    "type": "原告（法人、非法人组织）" if plaintiff_case_type not in CASE_SPECIAL_DEFENDANT_COMPANY_TYPE
                     else CASE_SPECIAL_DEFENDANT_COMPANY_TYPE[plaintiff_case_type],
                     "information": BaseCaseFormatter._format_company_info(case_data.get("plaintiff", {}))
                 })
@@ -104,7 +98,7 @@ class BaseCaseFormatter:
             })
             party_informations.append({
                 "type": "是否接受电子送达",
-                "information": BaseCaseFormatter._format_electronic_delivery(case_data.get("defendant", {}))
+                "information": BaseCaseFormatter._format_electronic_delivery(case_data.get("plaintiff", {}))
             })
 
             # 被告部分
@@ -112,6 +106,18 @@ class BaseCaseFormatter:
                 "type": "被告",
                 "information": BaseCaseFormatter._format_party_info(case_data.get("defendant", {}))
             })
+
+            if is_third_party:
+                # 第三人部分
+                party_informations.append({
+                    "type": "第三人（法人、非法人组织）",
+                    "information": BaseCaseFormatter._format_company_info(case_data.get("third_party", {})) 
+                })
+
+                party_informations.append({
+                    "type": "第三人（自然人）",
+                    "information": BaseCaseFormatter._format_party_info(case_data.get("third_party", {}))
+                })
 
         else:
             # 答辩人部分
@@ -123,7 +129,7 @@ class BaseCaseFormatter:
             # 如果 case_type 是答辩人（法人、非法人组织），插入法人信息
             if is_respondent_both:
                 party_informations.append({
-                    "type": "答辩人（法人、非法人组织）" if respondent_case_type not in CASE_SPECIAL_RESPONDENTS_COMPANY_TYPE 
+                    "type": "答辩人（法人、非法人组织）" if respondent_case_type not in CASE_SPECIAL_RESPONDENTS_COMPANY_TYPE
                     else CASE_SPECIAL_RESPONDENTS_COMPANY_TYPE[respondent_case_type],
                     "information": BaseCaseFormatter._format_company_info(case_data.get("respondent", {}))
                 })
@@ -141,7 +147,7 @@ class BaseCaseFormatter:
             })
             party_informations.append({
                 "type": "是否接受电子送达",
-                "information": BaseCaseFormatter._format_electronic_delivery(case_data.get("defendant", {}))
+                "information": BaseCaseFormatter._format_electronic_delivery(case_data.get("respondent", {}))
             })
 
         return party_informations
@@ -206,7 +212,8 @@ class BaseCaseFormatter:
             return ""
 
         # 使用集合简化条件判断
-        party_keys = {"plaintiffs", "defendants", "third_parties", "respondents"}
+        party_keys = {"plaintiffs", "defendants",
+                      "third_parties", "respondents"}
         if not party_keys.intersection(party_data.keys()):
             return ""
 
@@ -223,10 +230,11 @@ class BaseCaseFormatter:
             'residence': '经常居住地'
         }
 
-        parties = next((party_data.get(key) for key in party_keys if party_data.get(key)), [])
+        parties = next((party_data.get(key)
+                       for key in party_keys if party_data.get(key)), [])
         if not isinstance(parties, list):
             return ""
-        
+
         info_lines = []
         for party in parties:
             if not isinstance(party, dict):
@@ -234,12 +242,12 @@ class BaseCaseFormatter:
 
             if party.get('type'):  # 跳过没有姓名的当事人
                 continue
-            
+
             for field, label in fields.items():
                 value = party.get(field)
                 if value is None:
                     value = ''
-                
+
                 if field == 'gender':  # 特殊处理性别字段
                     gender_map = {
                         "男": f"{label}：男☑ 女☐",
@@ -248,9 +256,9 @@ class BaseCaseFormatter:
                     info_lines.append(gender_map.get(value, f"{label}：男☐ 女☐"))
                 else:
                     info_lines.append(f"{label}：{value}")
-            
+
             info_lines.append("")  # 添加空行分隔不同当事人
-        
+
         if len(info_lines) == 0:
             return "姓名：\n性别：男☐ 女☐\n出生日期：   年   月   日\n民族：\n工作单位：\n职务：\n联系电话：\n住所地（户籍所在地）：\n经常居住地："
 
@@ -261,15 +269,17 @@ class BaseCaseFormatter:
         """Format company information according to the specified template"""
         if not isinstance(company_data, dict):
             return ""
-        
-        party_keys = {"plaintiffs", "defendants", "third_parties", "respondents"}
+
+        party_keys = {"plaintiffs", "defendants",
+                      "third_parties", "respondents"}
         if not party_keys.intersection(company_data.keys()):
             return ""
-        
-        parties = next((company_data.get(key) for key in party_keys if company_data.get(key)), [])
+
+        parties = next((company_data.get(key)
+                       for key in party_keys if company_data.get(key)), [])
         if not isinstance(parties, list):
             return ""
-        
+
         # 提取字段映射表，便于维护和扩展
         fields = {
             'name': '名称',
@@ -280,7 +290,7 @@ class BaseCaseFormatter:
             'phone': '联系电话',
             'unified_code': '统一社会信用代码'
         }
-            # 处理企业类型
+        # 处理企业类型
         company_types = [
             "有限责任公司",
             "股份有限公司",
@@ -310,32 +320,33 @@ class BaseCaseFormatter:
             for field, label in fields.items():
                 value = party.get(field)
                 if value is None:
-                    value = ''                
-                info_lines.append(f"{label}：{value}")   
+                    value = ''
+                info_lines.append(f"{label}：{value}")
 
             current_type = party.get('type', '')
-            
+
             type_line = '类型：'
             for t in company_types:
                 checkbox = "☑" if t == current_type else "☐"
                 type_line += f"{t}{checkbox} "
-            
+
             type_lines.append(type_line)
 
             current_ownership = party.get('ownership', '')
             if current_ownership == '民营':
                 type_lines.append("国有☐ （控股☐参股☐） 民营☑")
-            elif current_ownership == '国有(控股)':            
+            elif current_ownership == '国有(控股)':
                 type_lines.append("国有☑ （控股☑参股☐） 民营☐")
             elif current_ownership == '国有(参股)':
                 type_lines.append("国有☐ （控股☐参股☑） 民营☐")
             else:
                 type_lines.append("国有☐ （控股☐参股☐） 民营☐")
-        
+
         if len(info_lines) == 0:
             return "名称：\n住所地（主要办事机构所在地）：\n注册地/登记地：\n法定代表人/主要负责人：\n职务：\n联系电话：\n统一社会信用代码：\n类型：有限责任公司☐ 股份有限公司☐ 上市公司☐ 其他企业法人☐ 事业单位☐ 社会团体☐ 基金会☐ 社会服务机构☐ 机关法人☐ 农村集体经济组织法人☐  城镇农村的合作经济组织法人☐ 基层群众性自治组织法人☐ 个人独资企业☐ 合伙企业☐ 不具有法人资格的专业服务机构☐\n国有☐ （控股☐参股☐） 民营☐"
 
         return "\n".join(info_lines + type_lines)
+
     @staticmethod
     def _format_agents(case_data):
         """格式化委托代理人信息，包含勾选框"""
@@ -461,6 +472,7 @@ class DocumentGenerator:
         else:
             filename = f"{plaintiff_name}-{doc_type_name}-{current_date}.docx"
         # 使用传入的格式化器格式化数据
+        print("case", case)
         formatted_data = formatter_class.format_case(case)
         print("fotmate_data", formatted_data)
         # 生成文档
