@@ -12,6 +12,8 @@ CASE_CATEGORIES = [
     "证券虚假陈述责任纠纷",
 ]
 
+YES_NO = ["☑", "☐"]
+
 CASE_COMPLAINT_PLAINTIFFS_NO_NP = ["劳动争议纠纷", "离婚纠纷"]
 
 CASE_COMPLAINT_PLAINTIFFS_NO_TP = ["劳动争议纠纷", "离婚纠纷"]
