@@ -21,14 +21,14 @@ class DivorceCaseFormatter(BaseCaseFormatter):
     BaseCaseFormatter.case_type = CASE_TYPE
 
     @staticmethod
-    def format_case(case):
+    def format_case(thisCase):
         """将离婚案件对象转换为适合文档模板的格式"""
         try:
-            case_data = json.loads(case.to_json())
+            case_data = json.loads(thisCase.to_json())
 
             # 调用父类的通用格式化方法
             template_data = super(DivorceCaseFormatter,
-                                  DivorceCaseFormatter).format_case(case)
+                                  DivorceCaseFormatter).format_case(thisCase)
 
             # 添加离婚案件的自定义部分
             template_data.update(
@@ -342,10 +342,10 @@ class DivorceCase:
         return json.dumps(self.__dict__, default=default_serializer, indent=4)
 
 
-def claim(case):
+def claim(thisCase):
     # 1. 解除婚姻关系
     st.subheader("1. 解除婚姻关系")
-    case.divorce_request = st.text_area(
+    thisCase.divorce_request = st.text_area(
         "具体主张", key="divorce_request", placeholder="请输入解除婚姻关系的具体主张")
 
     # 2. 夫妻共同财产
@@ -357,17 +357,17 @@ def claim(case):
         # （1）房屋明细
         st.write("房屋明细")
         num_houses = st.number_input("房屋数量", min_value=0, max_value=10, value=len(
-            case.property_data["houses"]), key="num_houses")
+            thisCase.property_data["houses"]), key="num_houses")
 
         # 调整房屋条目数量
-        while len(case.property_data["houses"]) < num_houses:
-            case.property_data["houses"].append(
+        while len(thisCase.property_data["houses"]) < num_houses:
+            thisCase.property_data["houses"].append(
                 {"owner": "无", "owner_details": None, "details": ""})
-        while len(case.property_data["houses"]) > num_houses:
-            case.property_data["houses"].pop()
+        while len(thisCase.property_data["houses"]) > num_houses:
+            thisCase.property_data["houses"].pop()
 
         # 显示房屋条目
-        for i, house in enumerate(case.property_data["houses"]):
+        for i, house in enumerate(thisCase.property_data["houses"]):
             st.write(f"房屋 {i + 1}")
             house["details"] = st.text_area("房屋详细信息", key=f"house_details_{
                                             i}", placeholder="请输入房屋的详细信息（如地址、面积、产权证号等）")
@@ -381,17 +381,17 @@ def claim(case):
         # （2）汽车明细
         st.write("汽车明细")
         num_cars = st.number_input("汽车数量", min_value=0, max_value=10, value=len(
-            case.property_data["cars"]), key="num_cars")
+            thisCase.property_data["cars"]), key="num_cars")
 
         # 调整汽车条目数量
-        while len(case.property_data["cars"]) < num_cars:
-            case.property_data["cars"].append(
+        while len(thisCase.property_data["cars"]) < num_cars:
+            thisCase.property_data["cars"].append(
                 {"owner": "无", "owner_details": None, "details": ""})
-        while len(case.property_data["cars"]) > num_cars:
-            case.property_data["cars"].pop()
+        while len(thisCase.property_data["cars"]) > num_cars:
+            thisCase.property_data["cars"].pop()
 
         # 显示汽车条目
-        for i, car in enumerate(case.property_data["cars"]):
+        for i, car in enumerate(thisCase.property_data["cars"]):
             st.write(f"汽车 {i + 1}")
             car["details"] = st.text_area("汽车详细信息", key=f"car_details_{
                                           i}", placeholder="请输入汽车的详细信息（如品牌、型号、车牌号等）")
@@ -405,17 +405,17 @@ def claim(case):
         # （3）存款明细
         st.write("存款明细")
         num_deposits = st.number_input("存款数量", min_value=0, max_value=10, value=len(
-            case.property_data["deposits"]), key="num_deposits")
+            thisCase.property_data["deposits"]), key="num_deposits")
 
         # 调整存款条目数量
-        while len(case.property_data["deposits"]) < num_deposits:
-            case.property_data["deposits"].append(
+        while len(thisCase.property_data["deposits"]) < num_deposits:
+            thisCase.property_data["deposits"].append(
                 {"owner": "无", "owner_details": None, "details": ""})
-        while len(case.property_data["deposits"]) > num_deposits:
-            case.property_data["deposits"].pop()
+        while len(thisCase.property_data["deposits"]) > num_deposits:
+            thisCase.property_data["deposits"].pop()
 
         # 显示存款条目
-        for i, deposit in enumerate(case.property_data["deposits"]):
+        for i, deposit in enumerate(thisCase.property_data["deposits"]):
             st.write(f"存款 {i + 1}")
             deposit["details"] = st.text_area("存款详细信息", key=f"deposit_details_{
                                               i}", placeholder="请输入存款的详细信息（如银行名称、账号、金额等）")
@@ -429,17 +429,17 @@ def claim(case):
         # （4）其他财产
         st.write("其他财产")
         num_other_properties = st.number_input("其他财产数量", min_value=0, max_value=10, value=len(
-            case.property_data["other_properties"]), key="num_other_properties")
+            thisCase.property_data["other_properties"]), key="num_other_properties")
 
         # 调整其他财产条目数量
-        while len(case.property_data["other_properties"]) < num_other_properties:
-            case.property_data["other_properties"].append(
+        while len(thisCase.property_data["other_properties"]) < num_other_properties:
+            thisCase.property_data["other_properties"].append(
                 {"owner": "无", "owner_details": None, "details": ""})
-        while len(case.property_data["other_properties"]) > num_other_properties:
-            case.property_data["other_properties"].pop()
+        while len(thisCase.property_data["other_properties"]) > num_other_properties:
+            thisCase.property_data["other_properties"].pop()
 
         # 显示其他财产条目
-        for i, other_property in enumerate(case.property_data["other_properties"]):
+        for i, other_property in enumerate(thisCase.property_data["other_properties"]):
             st.write(f"其他财产 {i + 1}")
             other_property["details"] = st.text_area("其他财产明细", key=f"other_property_details_{
                                                      i}", placeholder="请输入其他财产的详细信息（如财产类型、数量、价值等）")
@@ -456,16 +456,16 @@ def claim(case):
         "是否有夫妻共同债务", ["无债务", "有债务"], key="has_debt", horizontal=True)
     if has_debt == "有债务":
         num_debts = st.number_input(
-            "债务数量", min_value=0, max_value=10, value=len(case.debts), key="num_debts")
+            "债务数量", min_value=0, max_value=10, value=len(thisCase.debts), key="num_debts")
 
         # 调整债务条目数量
-        while len(case.debts) < num_debts:
-            case.debts.append({"描述": "", "承担主体": "原告", "其他承担主体": ""})
-        while len(case.debts) > num_debts:
-            case.debts.pop()
+        while len(thisCase.debts) < num_debts:
+            thisCase.debts.append({"描述": "", "承担主体": "原告", "其他承担主体": ""})
+        while len(thisCase.debts) > num_debts:
+            thisCase.debts.pop()
 
         # 显示债务条目
-        for i, debt in enumerate(case.debts):
+        for i, debt in enumerate(thisCase.debts):
             st.write(f"债务 {i + 1}")
             debt["描述"] = st.text_input("债务描述", key=f"debt_description_{
                                        i}", placeholder="请输入债务描述")
@@ -482,16 +482,16 @@ def claim(case):
         "是否有子女直接抚养问题", ["无此问题", "有此问题"], key="has_children", horizontal=True)
     if has_children == "有此问题":
         num_children = st.number_input(
-            "子女数量", min_value=0, max_value=10, value=len(case.children), key="num_children")
+            "子女数量", min_value=0, max_value=10, value=len(thisCase.children), key="num_children")
 
         # 调整子女条目数量
-        while len(case.children) < num_children:
-            case.children.append({"姓名": "", "归属": "原告"})
-        while len(case.children) > num_children:
-            case.children.pop()
+        while len(thisCase.children) < num_children:
+            thisCase.children.append({"姓名": "", "归属": "原告"})
+        while len(thisCase.children) > num_children:
+            thisCase.children.pop()
 
         # 显示子女条目
-        for i, child in enumerate(case.children):
+        for i, child in enumerate(thisCase.children):
             st.write(f"子女 {i + 1}")
             child["姓名"] = st.text_input("子女姓名", key=f"child_name_{
                                         i}", placeholder="请输入子女姓名")
@@ -504,13 +504,13 @@ def claim(case):
     has_child_support = st.radio(
         "是否有子女抚养费问题", ["无此问题", "有此问题"], key="has_child_support", horizontal=True)
     if has_child_support == "有此问题":
-        case.child_support["payer"] = st.radio(
+        thisCase.child_support["payer"] = st.radio(
             "抚养费承担主体", ["原告", "被告"], key="support_payer", horizontal=True)
-        case.child_support["amount"] = st.number_input(
+        thisCase.child_support["amount"] = st.number_input(
             "金额", key="support_amount", min_value=0.0, format="%.2f")
-        case.child_support["details"] = st.text_area(
+        thisCase.child_support["details"] = st.text_area(
             "明细", key="support_details", placeholder="请输入抚养费的明细")
-        case.child_support["payment_method"] = st.text_input(
+        thisCase.child_support["payment_method"] = st.text_input(
             "支付方式", key="support_payment_method", placeholder="请输入支付方式")
 
     # 6. 探望权
@@ -518,16 +518,16 @@ def claim(case):
     has_visitation_rights = st.radio(
         "是否有探望权问题", ["无此问题", "有此问题"], key="has_visitation_rights", horizontal=True)
     if has_visitation_rights == "有此问题":
-        case.visitation_rights["person"] = st.radio(
+        thisCase.visitation_rights["person"] = st.radio(
             "探望权行使主体", ["原告", "被告"], key="visitation_person", horizontal=True)
-        case.visitation_rights["method"] = st.text_area(
+        thisCase.visitation_rights["method"] = st.text_area(
             "行使方式", key="visitation_method", placeholder="请输入探望权的行使方式")
 
    # 7. 离婚损害赔偿／离婚经济补偿／离婚经济帮助
     st.subheader("7. 离婚损害赔偿／离婚经济补偿／离婚经济帮助")
 
     # 初始化 damages 数据
-    case.damages = {}
+    thisCase.damages = {}
 
     # 选择是否有相关问题
     has_damages = st.radio(
@@ -550,23 +550,23 @@ def claim(case):
             if is_selected:
                 amount = st.number_input(
                     f"{damage_type}金额", key=f"{damage_type}_amount", min_value=0.0, format="%.2f")
-                case.damages[damage_type] = amount
+                thisCase.damages[damage_type] = amount
 
         # 如果没有选择任何选项，设置为 "无此问题"
         if not any(damage_types.values()):
-            case.damages = {"无此问题": 0.0}
+            thisCase.damages = {"无此问题": 0.0}
     else:
         # 如果选择 "无此问题"，直接设置数据
-        case.damages = {"无此问题": 0.0}
+        thisCase.damages = {"无此问题": 0.0}
 
     # 8. 诉讼费用
     st.subheader("8. 诉讼费用")
-    case.litigation_fees = st.text_area(
+    thisCase.litigation_fees = st.text_area(
         "诉讼费用", key="litigation_fees", placeholder="请输入诉讼费用，以及费用承担方")
 
     # 9. 其他请求
     st.subheader("9. 本表未列明的其他请求")
-    case.other_requests = st.text_area(
+    thisCase.other_requests = st.text_area(
         "其他请求", key="other_requests", placeholder="请输入其他请求的具体内容")
 
 
