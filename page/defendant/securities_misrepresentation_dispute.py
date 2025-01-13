@@ -323,9 +323,9 @@ st.header("事实和理由（对起诉状事实与理由的确认或者异议）
 fact_reason(thisCase)
 
 if st.button("生成答辩状"):
-    st.write("案件信息（JSON 格式）:")
-    st.json(thisCase.to_json())
-    print(thisCase.to_json())
+    # st.write("案件信息（JSON 格式）:")
+    # st.json(thisCase.to_json())
+    # print(thisCase.to_json())
 
     try:
         with st.spinner("生成中..."):

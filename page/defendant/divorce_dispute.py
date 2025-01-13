@@ -207,9 +207,9 @@ respondent_details(thisCase)
 
 if st.button("生成答辩状"):
     # 输出 JSON 格式的案件信息
-    st.write("案件信息（JSON 格式）:")
-    st.json(thisCase.to_json())
-    print(thisCase.to_json())
+    # st.write("案件信息（JSON 格式）:")
+    # st.json(thisCase.to_json())
+
 
     try:
         with st.spinner("生成中..."):

@@ -157,8 +157,8 @@ fact_reason(thisCase)
 
 # 生成文档按钮
 if st.button("生成答辩状"):
-    st.write("案件信息（JSON 格式）:")
-    st.json(thisCase.to_json())
+    # st.write("案件信息（JSON 格式）:")
+    # st.json(thisCase.to_json())
 
     try:
         with st.spinner("生成中..."):
