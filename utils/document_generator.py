@@ -419,12 +419,14 @@ class DocumentGenerator:
 
     DOCUMENT_TYPES = {
         "complaint": "起诉状",
+        "complaint_2p": "起诉状", # 只有两个部分的起诉状模版
         "defense": "答辩状",
         "defense_2p": "答辩状",  # 只有两个部分的答辩状模版
     }
 
     TEMPLATE_FILES = {
         "complaint": "complaint.docx",
+        "complaint_2p": "complaint_2p.docx",
         "defense": "defense.docx",
         "defense_2p": "defense_2p.docx",
     }

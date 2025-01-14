@@ -8,6 +8,7 @@ from page.components.jurisdiction_and_preservation import JurisdictionAndPreserv
 from page.components.header import header
 from utils.document_generator import DocumentGenerator, BaseCaseFormatter
 import logging
+from utils.tools import st_date_input
 
 logger = logging.getLogger(__name__)
 
@@ -573,7 +574,7 @@ def claim(thisCase):
 def fact(thisCase):
     # 1. 婚姻关系基本情况
     st.subheader("1. 婚姻关系基本情况")
-    thisCase.marriage_info["marriage_date"] = st.date_input(
+    thisCase.marriage_info["marriage_date"] = st_date_input(
         "结婚时间", key="marriage_date")
     thisCase.marriage_info["children_info"] = st.text_area(
         "生育子女情况", key="children_info", placeholder="请输入生育子女情况")

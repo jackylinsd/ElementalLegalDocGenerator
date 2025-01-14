@@ -1,6 +1,7 @@
 # pages/components/complaint.py
 import streamlit as st
 from utils.type import *
+from utils.tools import st_date_input
 
 class Plaintiff:
     def __init__(self, case_type):
@@ -22,7 +23,7 @@ class Plaintiff:
         plaintiff = {
             "name": st.text_input("姓名", key=f"plaintiff_people_name_{index}", placeholder="请输入原告姓名"),
             "gender": st.radio("性别", ["男", "女"], key=f"plaintiff_people_gender_{index}", horizontal=True),
-            "dob": st.date_input("出生日期", key=f"plaintiff_people_dob_{index}"),
+            "dob": st_date_input("出生日期", key=f"plaintiff_people_dob_{index}"),
             "nationality": st.text_input("民族", key=f"plaintiff_people_nationality_{index}", placeholder="请输入民族"),
             "employer": st.text_input("工作单位", key=f"plaintiff_people_employer_{index}", placeholder="请输入工作单位"),
             "position": st.text_input("职务", key=f"plaintiff_people_position_{index}", placeholder="请输入职务"),
@@ -142,7 +143,7 @@ class Defendant:
         defendant = {
             "name": st.text_input("姓名", key=f"defendant_people_name_{index}", placeholder="请输入被告姓名"),
             "gender": st.radio("性别", ["男", "女"], key=f"defendant_people_gender_{index}", horizontal=True),
-            "dob": st.date_input("出生日期", key=f"defendant_people_dob_{index}"),
+            "dob": st_date_input("出生日期", key=f"defendant_people_dob_{index}"),
             "nationality": st.text_input("民族", key=f"defendant_people_nationality_{index}", placeholder="请输入民族"),
             "employer": st.text_input("工作单位", key=f"defendant_people_employer_{index}", placeholder="请输入工作单位"),
             "position": st.text_input("职务", key=f"defendant_people_position_{index}", placeholder="请输入职务"),
@@ -205,7 +206,7 @@ class ThirdParty:
         third_party = {
             "name": st.text_input("姓名", key=f"third_party_people_name_{index}", placeholder="请输入第三人姓名"),
             "gender": st.radio("性别", ["男", "女"], key=f"third_party_people_gender_{index}", horizontal=True),
-            "dob": st.date_input("出生日期", key=f"third_party_people_dob_{index}"),
+            "dob": st_date_input("出生日期", key=f"third_party_people_dob_{index}"),
             "nationality": st.text_input("民族", key=f"third_party_people_nationality_{index}", placeholder="请输入民族"),
             "employer": st.text_input("工作单位", key=f"third_party_people_employer_{index}", placeholder="请输入工作单位"),
             "position": st.text_input("职务", key=f"third_party_people_position_{index}", placeholder="请输入职务"),
@@ -262,7 +263,7 @@ class ThirdParty:
         third_party = {
             "name": st.text_input("姓名", key=f"third_party_people_name_{index}", placeholder="请输入第三人姓名"),
             "gender": st.radio("性别", ["男", "女"], key=f"third_party_people_gender_{index}", horizontal=True),
-            "dob": st.date_input("出生日期", key=f"third_party_people_dob_{index}"),
+            "dob": st_date_input("出生日期", key=f"third_party_people_dob_{index}"),
             "nationality": st.text_input("民族", key=f"third_party_people_nationality_{index}", placeholder="请输入民族"),
             "employer": st.text_input("工作单位", key=f"third_party_people_employer_{index}", placeholder="请输入工作单位"),
             "position": st.text_input("职务", key=f"third_party_people_position_{index}", placeholder="请输入职务"),

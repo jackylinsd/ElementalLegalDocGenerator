@@ -29,7 +29,7 @@ def respondent_details(thisCase):
     create_text_section("6. 证据清单（可另附页）", "q6", thisCase.replay_matters)
 
 
-class CreditCardCaseFormatter(BaseCaseFormatter):
+class TrafficAccidentCaseFormatter(BaseCaseFormatter):
     """数据格式化器"""
 
     BaseCaseFormatter.case_type = CASE_TYPE
@@ -40,7 +40,7 @@ class CreditCardCaseFormatter(BaseCaseFormatter):
         """将案件对象转换为适合文档模板的格式"""
         case_data = json.loads(case.to_json())
         template_data = super(
-            CreditCardCaseFormatter, CreditCardCaseFormatter
+            TrafficAccidentCaseFormatter, TrafficAccidentCaseFormatter
         ).format_case(case)
 
         # 使用全局定义的问题列表
@@ -101,7 +101,7 @@ if st.button("生成答辩状"):
             doc_bytes, filename = DocumentGenerator.generate_document(
                 "defense_2p",
                 thisCase,
-                CreditCardCaseFormatter,
+                TrafficAccidentCaseFormatter,
                 thisCase.respondent.respondents[0]["name"],
             )
 

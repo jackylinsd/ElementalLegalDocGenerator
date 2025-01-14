@@ -1,4 +1,5 @@
 import streamlit as st
+from utils.tools import st_date_input
 
 class JurisdictionAndPreservation:
     def __init__(self):
@@ -27,7 +28,7 @@ class JurisdictionAndPreservation:
         if self.pre_preservation == "是":
             self.pre_preservation_court = st.text_input(
                 "诉前保全法院", key="pre_preservation_court", placeholder="请输入诉前保全法院")
-            self.pre_preservation_time = st.date_input(
+            self.pre_preservation_time = st_date_input(
                 "诉前保全时间", key="pre_preservation_time")
         else:
             self.pre_preservation_court = ""

@@ -1,5 +1,6 @@
 import streamlit as st
 from utils.type import *
+from utils.tools import st_date_input
 
 class Respondent:
     def __init__(self, case_type):
@@ -19,7 +20,7 @@ class Respondent:
         respondent = {
             "name": st.text_input("姓名", key="respondent_people_name", placeholder="请输入答辩人姓名"),
             "gender": st.radio("性别", ["男", "女"], key="respondent_people_gender", horizontal=True),
-            "dob": st.date_input("出生日期", key="respondent_people_dob"),
+            "dob": st_date_input("出生日期", key="respondent_people_dob"),
             "nationality": st.text_input("民族", key="respondent_people_nationality", placeholder="请输入民族"),
             "employer": st.text_input("工作单位", key="respondent_people_employer", placeholder="请输入工作单位"),
             "position": st.text_input("职务", key="respondent_people_position", placeholder="请输入职务"),

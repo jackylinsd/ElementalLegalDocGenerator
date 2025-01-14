@@ -6,6 +6,8 @@ from page.components.section import create_text_section, create_radio_section, C
 from page.components.complaint import Defendant, Plaintiff, ThirdParty
 from utils.document_generator import DocumentGenerator, BaseCaseFormatter
 import json
+from utils.tools import st_date_input
+
 
 CASE_TYPE = "保证保险合同纠纷"
 
@@ -45,10 +47,10 @@ def claim(thisCase):
                                    q1_1}元（{"人民币，下同；如外币需特别注明" if not q1_2 else q1_3})；"})
 
     st.subheader("2. 保险费、违约金等")
-    q2_1 = st.date_input("截至至以下日期", key="due_date")
+    q2_1 = st_date_input("截至至以下日期", key="due_date")
     q2_2 = st.number_input(
         "欠保险费、违约金等共计", key="due_amount", placeholder="请输入金额")
-    q2_3 = st.date_input("自以下日期之后的保险费、违约金等各项费用计算至实际清偿之日止", key="start_date")
+    q2_3 = st_date_input("自以下日期之后的保险费、违约金等各项费用计算至实际清偿之日止", key="start_date")
     q2_4 = st.text_area("明细", key="details", placeholder="请输入明细")
 
     thisCase.reply_matters.append(
@@ -93,7 +95,7 @@ def fact(thisCase):
     st.subheader("1. 保证保险合同的签订情况")
     q7_1 = st.text_input("合同名称", key="contract_name", placeholder="请输入合同名称")
     q7_2 = st.text_input("合同主体", key="contract_parties", placeholder="请输入合同主体")
-    q7_3 = st.date_input("签订时间", key="contract_date")
+    q7_3 = st_date_input("签订时间", key="contract_date")
     q7_4 = st.text_input("签订地点", key="contract_location", placeholder="请输入签订地点")
     q7_5 = st.text_area("其他", key="other_signing_details", placeholder="请输入其他需要说明的内容，可留空")
     thisCase.reasons.append(
@@ -135,14 +137,14 @@ def fact(thisCase):
     st.subheader("5. 被告逾期未还款情况")
     q11_0 = st.radio("填写方式",["模版填写", "自定义填写"],key="q11")
     if q11_0 == "模版填写":
-        q11_1 = st.date_input("自以下日期开始", key="overdue_start_date",value="today")
-        q11_2 = st.date_input("截至以下日期", key="overdue_end_date",value="today")
+        q11_1 = st_date_input("自以下日期开始", key="overdue_start_date",value="today")
+        q11_2 = st_date_input("截至以下日期", key="overdue_end_date",value="today")
         q11_3 = st.number_input("已还款金额", key="repaid_amount", placeholder="请输入已还款金额")
         q11_4 = st.number_input("逾期但已还款金额", key="overdue_repaid_amount", placeholder="请输入逾期但已还款金额")
         q11_5 = st.number_input("共归还本金", key="principal_repaid", placeholder="请输入共归还本金")
         q11_6 = st.number_input("共归还利息", key="interest_repaid", placeholder="请输入共归还利息")
-        q11_15 = st.date_input("自以下日期开始逾期", key="overdue_start_date_2", value="2025-01-01")
-        q11_16 = st.date_input("逾期金额计算至以下日期", key="overdue_end_date_2", value="today")
+        q11_15 = st_date_input("自以下日期开始逾期", key="overdue_start_date_2", value="2025-01-01")
+        q11_16 = st_date_input("逾期金额计算至以下日期", key="overdue_end_date_2", value="today")
         q11_7 = st.number_input("欠付借款本金", key="outstanding_principal", placeholder="请输入欠付借款本金")
         q11_8 = st.number_input("欠付利息", key="outstanding_interest", placeholder="请输入欠付利息")
         q11_9 = st.number_input("欠付罚息", key="outstanding_penalty", placeholder="请输入欠付罚息")
@@ -163,9 +165,9 @@ def fact(thisCase):
     st.subheader("6. 保证保险合同的履行情况")
     q12_0 = st.radio("填写方式",["模版填写", "自定义填写"],key="q12")
     if q12_0 == "模版填写":
-        q12_1 = st.date_input("理赔日期", key="claim_date")
+        q12_1 = st_date_input("理赔日期", key="claim_date")
         q12_2 = st.number_input("理赔金额", key="claim_amount_2", placeholder="请输入理赔金额")
-        q12_3 = st.date_input("权益转让确认书取得日期", key="assignment_date")
+        q12_3 = st_date_input("权益转让确认书取得日期", key="assignment_date")
         thisCase.reasons.append(
             {"type": "6. 保证保险合同的履行情况", "information": f"原告于{q12_1}进行了理赔，代被告清偿债务，共赔款{q12_2}元，于{q12_3}取得权益转让确认书"}
         )
@@ -178,7 +180,7 @@ def fact(thisCase):
     st.subheader("7. 追索情况")
     q13_0 = st.radio("填写方式",["模版填写", "自定义填写"],key="q13")
     if q13_0 == "模版填写":
-        q13_1 = st.date_input("追索通知日期", key="demand_date",value="today")
+        q13_1 = st_date_input("追索通知日期", key="demand_date",value="today")
         q13_2 = st.number_input("被告已支付保费", key="paid_premium", placeholder="请输入被告已支付保费")
         q13_3 = st.number_input("被告已归还借款", key="repaid_loan", placeholder="请输入被告已归还借款")
         q13_4 = st.number_input("尚欠保费", key="outstanding_premium", placeholder="请输入尚欠保费")
@@ -223,13 +225,6 @@ class CreditCardCaseFormatter(BaseCaseFormatter):
         case_data = json.loads(thisCase.to_json())
         template_data = super(CreditCardCaseFormatter,
                               CreditCardCaseFormatter).format_case(thisCase)
-
-        # 使用全局定义的问题列表
-        # reply_questions = REPLY_QUESTIONS + ["答辩依据"]
-        # reason_questions = REASON_QUESTIONS + [
-        #     "其他需要说明的内容（可另附页）",
-        #     "证据清单（可另附页）",
-        # ]
 
         template_data.update(
         {
