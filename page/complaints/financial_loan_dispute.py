@@ -423,6 +423,10 @@ st.header("诉讼请求和依据")
 claim(thisCase)
 
 st.markdown("""______""")
+st.header("约定管辖和诉讼保全")
+thisCase.jurisdiction_and_preservation.show()
+
+st.markdown("""______""")
 st.header("事实和理由")
 fact(thisCase)
 
