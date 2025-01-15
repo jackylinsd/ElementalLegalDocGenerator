@@ -21,7 +21,7 @@ def respondent_details(thisCase: dict):
         q1_detail = f'确认☑      异议☐\n{q1_fact}'
     else:
         q1_detail = f'确认☐      异议☑\n{q1_fact}'
-    thisCase.replay_matters.append(q1_detail)
+    thisCase.reply_matters.append(q1_detail)
 
     # 2. 对夫妻共同财产诉请的确认和异议
     st.subheader("2. 对夫妻共同财产诉请的确认和异议")
@@ -32,7 +32,7 @@ def respondent_details(thisCase: dict):
         q2_detail = f'确认☑      异议☐\n{q2_fact}'
     else:
         q2_detail = f'确认☐      异议☑\n{q2_fact}'
-    thisCase.replay_matters.append(q2_detail)
+    thisCase.reply_matters.append(q2_detail)
 
     # 3. 对夫妻共同债务诉请的确认和异议
     st.subheader("3. 对夫妻共同债务诉请的确认和异议")
@@ -43,7 +43,7 @@ def respondent_details(thisCase: dict):
         q3_detail = f'确认☑      异议☐\n{q3_fact}'
     else:
         q3_detail = f'确认☐      异议☑\n{q3_fact}'
-    thisCase.replay_matters.append(q3_detail)
+    thisCase.reply_matters.append(q3_detail)
 
     # 4. 对子女直接抚养诉请的确认和异议
     st.subheader("4. 对子女直接抚养诉请的确认和异议")
@@ -54,7 +54,7 @@ def respondent_details(thisCase: dict):
         q4_detail = f'确认☑      异议☐\n{q4_fact}'
     else:
         q4_detail = f'确认☐      异议☑\n{q4_fact}'
-    thisCase.replay_matters.append(q4_detail)
+    thisCase.reply_matters.append(q4_detail)
 
     # 5. 对子女抚养费诉请的确认和异议
     st.subheader("5. 对子女抚养费诉请的确认和异议")
@@ -65,7 +65,7 @@ def respondent_details(thisCase: dict):
         q5_detail = f'确认☑      异议☐\n{q5_fact}'
     else:
         q5_detail = f'确认☐      异议☑\n{q5_fact}'
-    thisCase.replay_matters.append(q5_detail)
+    thisCase.reply_matters.append(q5_detail)
 
     # 6. 对子女探望权诉请的确认和异议
     st.subheader("6. 对子女探望权诉请的确认和异议")
@@ -76,7 +76,7 @@ def respondent_details(thisCase: dict):
         q6_detail = f'确认☑      异议☐\n{q6_fact}'
     else:
         q6_detail = f'确认☐      异议☑\n{q6_fact}'
-    thisCase.replay_matters.append(q6_detail)
+    thisCase.reply_matters.append(q6_detail)
 
     # 7. 对赔偿/补偿/经济帮助的确认和异议
     st.subheader("7. 对赔偿/补偿/经济帮助的确认和异议")
@@ -87,22 +87,22 @@ def respondent_details(thisCase: dict):
         q7_detail = f'确认☑      异议☐\n{q7_fact}'
     else:
         q7_detail = f'确认☐      异议☑\n{q7_fact}'
-    thisCase.replay_matters.append(q7_detail)
+    thisCase.reply_matters.append(q7_detail)
 
     # 8. 其他事由
     st.subheader("8. 其他事由")
     q8_fact = st.text_area(label="其他事由", value="", key="q8_fact", label_visibility="collapsed")
-    thisCase.replay_matters.append(q8_fact)
+    thisCase.reply_matters.append(q8_fact)
 
     # 9. 答辩的依据
     st.subheader("9. 答辩的依据")
     q9_fact = st.text_area(label="法律及司法解释的规定，要写明具体条文", value="", key="q9_fact", label_visibility="collapsed")
-    thisCase.replay_matters.append(q9_fact)
+    thisCase.reply_matters.append(q9_fact)
 
     # 10. 证据清单（可另附页）
     st.subheader("10. 证据清单（可另附页）")
     q10_fact = st.text_area(label="证据清单", value="附页", key="q10_fact", label_visibility="collapsed")
-    thisCase.replay_matters.append(q10_fact)
+    thisCase.reply_matters.append(q10_fact)
 class DivorceCaseFormatter(BaseCaseFormatter):
     """离婚案件数据格式化器"""
 
@@ -134,7 +134,7 @@ class DivorceCaseFormatter(BaseCaseFormatter):
     def _format_reply_matters(case_data):
         """Format reply matters from the case data"""
         # Get the reply matters array from case data
-        reply_matters = case_data.get('replay_matters', [])
+        reply_matters = case_data.get('reply_matters', [])
         
         # The indices correspond to the questions in respondent_details
         matter_types = [
@@ -171,7 +171,7 @@ class DivorceCaseRespondent:
     def __init__(self):
         self.respondent = None
         self.case_num = None
-        self.replay_matters = []
+        self.reply_matters = []
 
     def to_json(self):
         # 自定义序列化函数

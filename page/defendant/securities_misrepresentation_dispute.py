@@ -21,7 +21,7 @@ def respondent_details(thisCase: dict):
     else:
         q1_fact = st.text_area("事实和理由", key="q1_fact")
         q1_detail = f'无☐\n有☑ 事实和理由：{q1_fact}'
-    thisCase.replay_matters.append(q1_detail)
+    thisCase.reply_matters.append(q1_detail)
 
     # 2. 对主张连带责任有无异议
     st.subheader("2. 对主张连带责任有无异议")
@@ -32,7 +32,7 @@ def respondent_details(thisCase: dict):
     else:
         q2_fact = st.text_area("事实和理由", key="q2_fact")
         q2_detail = f'无☐\n有☑ 事实和理由：{q2_fact}'
-    thisCase.replay_matters.append(q2_detail)
+    thisCase.reply_matters.append(q2_detail)
 
     # 3. 对实现债权的费用有无异议
     st.subheader("3. 对实现债权的费用有无异议")
@@ -43,7 +43,7 @@ def respondent_details(thisCase: dict):
     else:
         q3_fact = st.text_area("事实和理由", key="q3_fact")
         q3_detail = f'无☐\n有☑ 事实和理由：{q3_fact}'
-    thisCase.replay_matters.append(q3_detail)
+    thisCase.reply_matters.append(q3_detail)
 
     # 4. 对其他请求有无异议
     st.subheader("4. 对其他请求有无异议")
@@ -54,7 +54,7 @@ def respondent_details(thisCase: dict):
     else:
         q4_fact = st.text_area("事实和理由", key="q4_fact")
         q4_detail = f'无☐\n有☑ 事实和理由：{q4_fact}'
-    thisCase.replay_matters.append(q4_detail)
+    thisCase.reply_matters.append(q4_detail)
 
     # 5. 对标的总额有无异议
     st.subheader("5. 对标的总额有无异议")
@@ -65,14 +65,14 @@ def respondent_details(thisCase: dict):
     else:
         q5_fact = st.text_area("事实和理由", key="q5_fact")
         q5_detail = f'无☐\n有☑ 事实和理由：{q5_fact}'
-    thisCase.replay_matters.append(q5_detail)
+    thisCase.reply_matters.append(q5_detail)
 
     # 6. 答辩依据
     st.subheader("6. 答辩依据")
     q6_1 = st.text_area("合同约定", key="q6_1")
     q6_2 = st.text_area("法律规定", key="q6_2")
     q6_detail = f'合同约定：{q6_1}\n法律规定：{q6_2}'
-    thisCase.replay_matters.append(q6_detail)
+    thisCase.reply_matters.append(q6_detail)
 
 def fact_reason(thisCase: dict):
     # 1. 对存在虚假陈述行为的情况有无异议
@@ -221,7 +221,7 @@ class SecuritiesCaseFormatter(BaseCaseFormatter):
     @staticmethod
     def _format_reply_matters(case_data):
         """Format reply matters from the case data"""
-        reply_matters = case_data.get('replay_matters', [])
+        reply_matters = case_data.get('reply_matters', [])
 
         matter_types = [
             "1. 对赔偿因虚假陈述导致的损失有无异议",
@@ -288,7 +288,7 @@ class SecuritiesCaseRespondent:
     def __init__(self):
         self.respondent = None
         self.case_num = None
-        self.replay_matters = []
+        self.reply_matters = []
         self.reasons = []
 
     def to_json(self):

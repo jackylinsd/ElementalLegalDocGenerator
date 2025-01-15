@@ -28,17 +28,17 @@ REPLY_QUESTIONS = [
 def respondent_details(thisCase):
     """答辩事项部分"""
     for i, question in enumerate(REPLY_QUESTIONS, 1):
-        create_radio_section(f"{i}. {question}", f"q{i}", thisCase.replay_matters)
+        create_radio_section(f"{i}. {question}", f"q{i}", thisCase.reply_matters)
 
     # 答辩依据部分
     st.subheader("10. 答辩的依据")
     law = st.text_area("法律及司法解释的规定，要写明具体条文", key="q10_1")
-    thisCase.replay_matters.append(f"法律及司法解释的规定：{law}")
+    thisCase.reply_matters.append(f"法律及司法解释的规定：{law}")
 
     # 证据清单
     st.subheader("11. 证据清单（可另附页）")
     evidence = st.text_area("证据清单", key="q11_1")
-    thisCase.replay_matters.append(f"证据清单：{evidence}")
+    thisCase.reply_matters.append(f"证据清单：{evidence}")
 
 
 
@@ -66,11 +66,11 @@ class LaborDisputeCaseFormatter(BaseCaseFormatter):
                     for i, (q, info) in enumerate(
                         zip(
                             reply_questions,
-                            case_data.get("replay_matters", [])
+                            case_data.get("reply_matters", [])
                             + [""]
                             * (
                                 len(reply_questions)
-                                - len(case_data.get("replay_matters", []))
+                                - len(case_data.get("reply_matters", []))
                             ),
                         )
                     )

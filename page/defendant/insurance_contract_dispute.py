@@ -35,13 +35,13 @@ REASON_QUESTIONS = [
 def respondent_details(thisCase):
     """答辩事项部分"""
     for i, question in enumerate(REPLY_QUESTIONS, 1):
-        create_radio_section(f"{i}. {question}", f"q{i}", thisCase.replay_matters)
+        create_radio_section(f"{i}. {question}", f"q{i}", thisCase.reply_matters)
 
     # 答辩依据部分
     st.subheader("6. 答辩依据")
     contract = st.text_area("合同约定", key="q6_1")
     law = st.text_area("法律规定", key="q6_2")
-    thisCase.replay_matters.append(f"合同约定：{contract}\n法律规定：{law}")
+    thisCase.reply_matters.append(f"合同约定：{contract}\n法律规定：{law}")
 
 
 def fact_reason(thisCase):
@@ -80,11 +80,11 @@ class InsuranceCaseFormatter(BaseCaseFormatter):
                     for i, (q, info) in enumerate(
                         zip(
                             reply_questions,
-                            case_data.get("replay_matters", [])
+                            case_data.get("reply_matters", [])
                             + [""]
                             * (
                                 len(reply_questions)
-                                - len(case_data.get("replay_matters", []))
+                                - len(case_data.get("reply_matters", []))
                             ),
                         )
                     )

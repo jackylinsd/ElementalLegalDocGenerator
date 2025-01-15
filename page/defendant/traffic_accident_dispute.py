@@ -24,9 +24,9 @@ REPLY_QUESTIONS = [
 def respondent_details(thisCase):
     """答辩事项部分"""
     for i, question in enumerate(REPLY_QUESTIONS, 1):
-        create_radio_section(f"{i}. {question}", f"q{i}", thisCase.replay_matters)
+        create_radio_section(f"{i}. {question}", f"q{i}", thisCase.reply_matters)
 
-    create_text_section("6. 证据清单（可另附页）", "q6", thisCase.replay_matters)
+    create_text_section("6. 证据清单（可另附页）", "q6", thisCase.reply_matters)
 
 
 class TrafficAccidentCaseFormatter(BaseCaseFormatter):
@@ -53,11 +53,11 @@ class TrafficAccidentCaseFormatter(BaseCaseFormatter):
                     for i, (q, info) in enumerate(
                         zip(
                             reply_questions,
-                            case_data.get("replay_matters", [])
+                            case_data.get("reply_matters", [])
                             + [""]
                             * (
                                 len(reply_questions)
-                                - len(case_data.get("replay_matters", []))
+                                - len(case_data.get("reply_matters", []))
                             ),
                         )
                     )
