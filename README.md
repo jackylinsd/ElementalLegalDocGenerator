@@ -44,8 +44,8 @@
 
 1. **克隆仓库**：
    ```bash
-   git clone https://github.com/your-repository/pleading-generator.git
-   cd pleading-generator
+   git clone https://github.com/ByronLeeeee/ElementalLegalDocGenerator.git
+   cd ElementalLegalDocGenerator
    ```
 
 2. **安装依赖**：
