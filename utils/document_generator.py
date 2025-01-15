@@ -474,9 +474,9 @@ class DocumentGenerator:
         else:
             filename = f"{plaintiff_name}-{doc_type_name}-{current_date}.docx"
         # 使用传入的格式化器格式化数据
-        print("case", case)
+        # print("case", case)
         formatted_data = formatter_class.format_case(case)
-        print("fotmate_data", formatted_data)
+        # print("fotmate_data", formatted_data)
         # 生成文档
         doc = DocxTemplate(template_path)
         doc.render(formatted_data)
