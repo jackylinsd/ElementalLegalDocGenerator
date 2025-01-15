@@ -44,7 +44,7 @@ def claim(thisCase):
         q1_3 = st.text_input("外币币种", key="claim_currency",
                              placeholder="请输入外币币种")
     thisCase.reply_matters.append({"type": "1. 理赔款", "information": f"支付理赔款{
-                                   q1_1}元（{"人民币，下同；如外币需特别注明" if not q1_2 else q1_3})；"})
+                                   q1_1}元（{"人民币，下同；如外币需特别注明" if not q1_2 else q1_3}）；"})
 
     st.subheader("2. 保险费、违约金等")
     q2_1 = st_date_input("截至至以下日期", key="due_date")
