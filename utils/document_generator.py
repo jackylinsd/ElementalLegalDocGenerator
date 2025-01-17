@@ -432,10 +432,16 @@ class DocumentGenerator:
     }
 
     @classmethod
+    def sanitize_filename(cls, name: str) -> str:
+        """清理文件名中的非法字符"""
+        return "".join(c if c.isalnum() or c in ('-', '_') else '_' for c in name)
+
+
+    @classmethod
     def generate_document(
         cls,
         doc_type: str,
-        case: Any,
+        thisCase: Any,
         formatter_class: type[DataFormatter],
         plaintiff_name: str,
         defendant_name: str = '',
@@ -459,23 +465,28 @@ class DocumentGenerator:
         if doc_type not in cls.DOCUMENT_TYPES:
             raise ValueError(f"无效的文档类型: {doc_type}")
 
-        # 获取模板文件路径
-        template_path = os.path.join(
-            template_dir, cls.TEMPLATE_FILES[doc_type])
+        # 获取当前目录并生成模板文件的绝对路径
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        template_path = os.path.join(current_dir, "..", template_dir, cls.TEMPLATE_FILES[doc_type])
+        template_path = os.path.abspath(template_path)
+
         if not os.path.exists(template_path):
-            raise FileNotFoundError(f"找不到模板文件: {template_path}")
+                    raise FileNotFoundError(f"找不到模板文件: {template_path}")
+
+        # 清理文件名中的非法字符
+        sanitized_plaintiff_name = cls.sanitize_filename(plaintiff_name)
+        sanitized_defendant_name = cls.sanitize_filename(defendant_name)
 
         # 生成文件名
         current_date = datetime.now().strftime("%Y%m%d")
         doc_type_name = cls.DOCUMENT_TYPES[doc_type]
-        if doc_type == "complaint":
-            filename = f"{plaintiff_name}、{
-                defendant_name}-{doc_type_name}-{current_date}.docx"
-        else:
-            filename = f"{plaintiff_name}-{doc_type_name}-{current_date}.docx"
+        filename_parts = [sanitized_plaintiff_name, doc_type_name, current_date]
+        if defendant_name:
+            filename_parts.insert(1, f"{sanitized_defendant_name}、")
+        filename = "-".join(filename_parts) + ".docx"
         # 使用传入的格式化器格式化数据
         # print("case", case)
-        formatted_data = formatter_class.format_case(case)
+        formatted_data = formatter_class.format_case(thisCase)
         # print("fotmate_data", formatted_data)
         # 生成文档
         doc = DocxTemplate(template_path)
