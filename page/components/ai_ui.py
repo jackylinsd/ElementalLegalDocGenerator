@@ -15,4 +15,4 @@ class AIComponent:
                 else:
                     ai_result = self.ai_server.optimize_text(text, self.case_type)
                     with st.expander("展开"):
-                        st.text_area(f"AI 优化结果", value=ai_result)
+                        st.text_area(f"AI 优化结果（请手动复制需要的内容到上方）", value=ai_result)
