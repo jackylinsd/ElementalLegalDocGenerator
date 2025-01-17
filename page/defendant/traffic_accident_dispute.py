@@ -4,12 +4,13 @@ from page.components.defendant import Respondent
 from page.components.header import header
 from utils.document_generator import DocumentGenerator, BaseCaseFormatter
 from page.components.section import (
-    create_radio_section,
-    create_text_section,
+CreateSections,
     CommonCaseRespondent,
 )
 
 CASE_TYPE = "机动车交通事故责任纠纷"
+
+new_sections = CreateSections(CASE_TYPE)
 
 # 集中定义所有问题
 REPLY_QUESTIONS = [
@@ -24,9 +25,9 @@ REPLY_QUESTIONS = [
 def respondent_details(thisCase):
     """答辩事项部分"""
     for i, question in enumerate(REPLY_QUESTIONS, 1):
-        create_radio_section(f"{i}. {question}", f"q{i}", thisCase.reply_matters)
+        new_sections.create_radio_section(f"{i}. {question}", f"q{i}", thisCase.reply_matters)
 
-    create_text_section("6. 证据清单（可另附页）", "q6", thisCase.reply_matters)
+    new_sections.create_text_section("6. 证据清单（可另附页）", "q6", thisCase.reply_matters)
 
 
 class TrafficAccidentCaseFormatter(BaseCaseFormatter):

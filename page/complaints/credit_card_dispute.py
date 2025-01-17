@@ -1,9 +1,8 @@
 import streamlit as st
 from page.components.complaint import Plaintiff
-from page.components.jurisdiction_and_preservation import JurisdictionAndPreservation
 from page.components.ai_ui import AIComponent
 from page.components.header import header
-from page.components.section import create_text_section, create_radio_section, CommonCasePlaintiff
+from page.components.section import  CommonCasePlaintiff
 from page.components.complaint import Defendant, Plaintiff, ThirdParty
 from utils.document_generator import DocumentGenerator, BaseCaseFormatter
 import json

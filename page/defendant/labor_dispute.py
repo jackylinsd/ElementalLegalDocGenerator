@@ -4,12 +4,13 @@ from page.components.defendant import Respondent
 from page.components.header import header
 from utils.document_generator import DocumentGenerator, BaseCaseFormatter
 from page.components.section import (
-    create_radio_section,
-    create_text_section,
+    CreateSections,
     CommonCaseRespondent,
 )
 
 CASE_TYPE = "劳动争议纠纷"
+
+new_sections = CreateSections(CASE_TYPE)
 
 # 答辩事项问题列表
 REPLY_QUESTIONS = [
@@ -28,7 +29,7 @@ REPLY_QUESTIONS = [
 def respondent_details(thisCase):
     """答辩事项部分"""
     for i, question in enumerate(REPLY_QUESTIONS, 1):
-        create_radio_section(f"{i}. {question}", f"q{i}", thisCase.reply_matters)
+        new_sections.create_radio_section(f"{i}. {question}", f"q{i}", thisCase.reply_matters)
 
     # 答辩依据部分
     st.subheader("10. 答辩的依据")

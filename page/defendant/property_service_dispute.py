@@ -6,10 +6,13 @@ from utils.document_generator import DocumentGenerator, BaseCaseFormatter
 import logging
 import pandas as pd
 from datetime import date, datetime
+from page.components.ai_ui import AIComponent
 
 logger = logging.getLogger(__name__)
 
 CASE_TYPE = '物业服务合同纠纷'
+
+ai_component = AIComponent(CASE_TYPE)
 
 def respondent_details(thisCase: dict):
     # 1. 对物业费有无异议
@@ -20,6 +23,7 @@ def respondent_details(thisCase: dict):
         q1_detail = f'无☑\n有☐ 事实和理由：'
     else:
         q1_fact = st.text_area("事实和理由", key="q1_fact")
+        ai_component.ai_optimize_text(q1_fact, id="q1_fact_b")
         q1_detail = f'无☐\n有☑ 事实和理由：{q1_fact}'
     thisCase.reply_matters.append(q1_detail)
 
@@ -31,6 +35,7 @@ def respondent_details(thisCase: dict):
         q2_detail = f'无☑\n有☐ 事实和理由：'
     else:
         q2_fact = st.text_area("事实和理由", key="q2_fact")
+        ai_component.ai_optimize_text(q2_fact, id="q2_fact_b")
         q2_detail = f'无☐\n有☑ 事实和理由：{q2_fact}'
     thisCase.reply_matters.append(q2_detail)
 
@@ -42,6 +47,7 @@ def respondent_details(thisCase: dict):
         q3_detail = f'无☑\n有☐ 事实和理由：'
     else:
         q3_fact = st.text_area("事实和理由", key="q3_fact")
+        ai_component.ai_optimize_text(q3_fact, id="q3_fact_b")
         q3_detail = f'无☐\n有☑ 事实和理由：{q3_fact}'
     thisCase.reply_matters.append(q3_detail)
 
@@ -53,6 +59,7 @@ def respondent_details(thisCase: dict):
         q4_detail = f'无☑\n有☐ 事实和理由：'
     else:
         q4_fact = st.text_area("事实和理由", key="q4_fact")
+        ai_component.ai_optimize_text(q4_fact, id="q4_fact_b")
         q4_detail = f'无☐\n有☑ 事实和理由：{q4_fact}'
     thisCase.reply_matters.append(q4_detail)
 
@@ -72,6 +79,7 @@ def fact_reason(thisCase: dict):
         f1_detail = f'无☑\n有☐ 事实和理由：'
     else:
         f1_fact = st.text_area("事实和理由", key="f1_fact")
+        ai_component.ai_optimize_text(f1_fact, id="f1_fact_b")
         f1_detail = f'无☐\n有☑ 事实和理由：{f1_fact}'
     thisCase.reasons.append(f1_detail)
 
@@ -83,6 +91,7 @@ def fact_reason(thisCase: dict):
         f2_detail = f'无☑\n有☐ 事实和理由：'
     else:
         f2_fact = st.text_area("事实和理由", key="f2_fact")
+        ai_component.ai_optimize_text(f2_fact, id="f2_fact_b")
         f2_detail = f'无☐\n有☑ 事实和理由：{f2_fact}'
     thisCase.reasons.append(f2_detail)
 
@@ -94,6 +103,7 @@ def fact_reason(thisCase: dict):
         f3_detail = f'无☑\n有☐ 事实和理由：'
     else:
         f3_fact = st.text_area("事实和理由", key="f3_fact")
+        ai_component.ai_optimize_text(f3_fact, id="f3_fact_b")
         f3_detail = f'无☐\n有☑ 事实和理由：{f3_fact}'
     thisCase.reasons.append(f3_detail)
 
@@ -105,6 +115,7 @@ def fact_reason(thisCase: dict):
         f4_detail = f'无☑\n有☐ 事实和理由：'
     else:
         f4_fact = st.text_area("事实和理由", key="f4_fact")
+        ai_component.ai_optimize_text(f4_fact, id="f4_fact_b")
         f4_detail = f'无☐\n有☑ 事实和理由：{f4_fact}'
     thisCase.reasons.append(f4_detail)
 
@@ -116,6 +127,7 @@ def fact_reason(thisCase: dict):
         f5_detail = f'无☑\n有☐ 事实和理由：'
     else:
         f5_fact = st.text_area("事实和理由", key="f5_fact")
+        ai_component.ai_optimize_text(f5_fact, id="f5_fact_b")
         f5_detail = f'无☐\n有☑ 事实和理由：{f5_fact}'
     thisCase.reasons.append(f5_detail)
 
@@ -127,6 +139,7 @@ def fact_reason(thisCase: dict):
         f6_detail = f'无☑\n有☐ 事实和理由：'
     else:
         f6_fact = st.text_area("事实和理由", key="f6_fact")
+        ai_component.ai_optimize_text(f6_fact, id="f6_fact_b")
         f6_detail = f'无☐\n有☑ 事实和理由：{f6_fact}'
     thisCase.reasons.append(f6_detail)
 
@@ -138,6 +151,7 @@ def fact_reason(thisCase: dict):
         f7_detail = f'无☑\n有☐ 事实和理由：'
     else:
         f7_fact = st.text_area("事实和理由", key="f7_fact")
+        ai_component.ai_optimize_text(f7_fact, id="f7_fact_b")
         f7_detail = f'无☐\n有☑ 事实和理由：{f7_fact}'
     thisCase.reasons.append(f7_detail)
 
@@ -149,6 +163,7 @@ def fact_reason(thisCase: dict):
         f8_detail = f'无☑\n有☐ 事实和理由：'
     else:
         f8_fact = st.text_area("事实和理由", key="f8_fact")
+        ai_component.ai_optimize_text(f8_fact, id="f8_fact_b")
         f8_detail = f'无☐\n有☑ 事实和理由：{f8_fact}'
     thisCase.reasons.append(f8_detail)
 
@@ -160,6 +175,7 @@ def fact_reason(thisCase: dict):
         f9_detail = f'无☑\n有☐ 事实和理由：'
     else:
         f9_fact = st.text_area("事实和理由", key="f9_fact")
+        ai_component.ai_optimize_text(f9_fact, id="f9_fact_b")
         f9_detail = f'无☐\n有☑ 事实和理由：{f9_fact}'
     thisCase.reasons.append(f9_detail)
 
@@ -171,12 +187,14 @@ def fact_reason(thisCase: dict):
         f10_detail = f'无☑\n有☐ 事实和理由：'
     else:
         f10_fact = st.text_area("事实和理由", key="f10_fact")
+        ai_component.ai_optimize_text(f10_fact, id="f10_fact_b")
         f10_detail = f'无☐\n有☑ 事实和理由：{f10_fact}'
     thisCase.reasons.append(f10_detail)
 
     # 11. 其他需要说明的内容
     st.subheader("11. 其他需要说明的内容（可另附页）")
     f11_content = st.text_area("其他内容", key="f11_content")
+    ai_component.ai_optimize_text(f11_content, id="f11_content_b")
     thisCase.reasons.append(f11_content)
 
     # 12. 证据清单

@@ -4,15 +4,15 @@ from page.components.defendant import Respondent
 from page.components.header import header
 from utils.document_generator import DocumentGenerator, BaseCaseFormatter
 from page.components.section import (
-    create_radio_section,
-    create_text_section,
+    CreateSections,
     CommonCaseRespondent,
 )
 from utils.ai_servers import AIServer
 
-ai_server = AIServer()
+
 
 CASE_TYPE = '银行信用卡纠纷'
+new_sections = CreateSections(CASE_TYPE)
 
 # 集中定义所有问题
 REPLY_QUESTIONS = [
@@ -44,7 +44,7 @@ REASON_QUESTIONS = [
 def respondent_details(thisCase):
     """答辩事项部分"""
     for i, question in enumerate(REPLY_QUESTIONS, 1):
-        create_radio_section(f"{i}. {question}", f"q{i}", thisCase.reply_matters)
+        new_sections.create_radio_section(f"{i}. {question}", f"q{i}", thisCase.reply_matters)
 
     # 答辩依据部分
     st.subheader("7. 答辩依据")
@@ -55,11 +55,11 @@ def respondent_details(thisCase):
 def fact_reason(thisCase):
     """事实和理由部分"""
     for i, question in enumerate(REASON_QUESTIONS, 1):
-        create_radio_section(f"{i}. {question}", f"f{i}", thisCase.reasons)
+        new_sections.create_radio_section(f"{i}. {question}", f"f{i}", thisCase.reasons)
 
     # 其他说明和证据清单
-    create_text_section("15. 其他需要说明的内容", "f15_content", thisCase.reasons)
-    create_text_section("16. 证据清单", "f16_content", thisCase.reasons)
+    new_sections.create_text_section("15. 其他需要说明的内容", "f15_content", thisCase.reasons)
+    new_sections.create_text_section("16. 证据清单", "f16_content", thisCase.reasons)
 
 class CreditCardCaseFormatter(BaseCaseFormatter):
     """数据格式化器"""

@@ -4,12 +4,13 @@ from page.components.defendant import Respondent
 from page.components.header import header
 from utils.document_generator import DocumentGenerator, BaseCaseFormatter
 from page.components.section import (
-    create_radio_section,
-    create_text_section,
+    CreateSections,
     CommonCaseRespondent,
 )
 
 CASE_TYPE = "保证保险合同纠纷"
+
+new_sections = CreateSections(CASE_TYPE)
 
 # 答辩事项问题列表
 REPLY_QUESTIONS = [
@@ -35,7 +36,8 @@ REASON_QUESTIONS = [
 def respondent_details(thisCase):
     """答辩事项部分"""
     for i, question in enumerate(REPLY_QUESTIONS, 1):
-        create_radio_section(f"{i}. {question}", f"q{i}", thisCase.reply_matters)
+        new_sections.create_radio_section(f"{i}. {question}", f"q{
+                             i}", thisCase.reply_matters)
 
     # 答辩依据部分
     st.subheader("6. 答辩依据")
@@ -47,11 +49,11 @@ def respondent_details(thisCase):
 def fact_reason(thisCase):
     """事实和理由部分"""
     for i, question in enumerate(REASON_QUESTIONS, 1):
-        create_radio_section(f"{i}. {question}", f"f{i}", thisCase.reasons)
+        new_sections.create_radio_section(f"{i}. {question}", f"f{i}", thisCase.reasons)
 
     # 其他说明和证据清单
-    create_text_section("9. 其他需要说明的内容（可另附页）", "f9_content", thisCase.reasons)
-    create_text_section("10. 证据清单（可另附页）", "f10_content", thisCase.reasons)
+    new_sections.create_text_section("9. 其他需要说明的内容（可另附页）", "f9_content", thisCase.reasons)
+    new_sections.create_text_section("10. 证据清单（可另附页）", "f10_content", thisCase.reasons)
 
 
 class InsuranceCaseFormatter(BaseCaseFormatter):
@@ -64,7 +66,8 @@ class InsuranceCaseFormatter(BaseCaseFormatter):
     def format_case(case):
         """将案件对象转换为适合文档模板的格式"""
         case_data = json.loads(case.to_json())
-        template_data = super(InsuranceCaseFormatter, InsuranceCaseFormatter).format_case(case)
+        template_data = super(InsuranceCaseFormatter,
+                              InsuranceCaseFormatter).format_case(case)
 
         # 使用全局定义的问题列表
         reply_questions = REPLY_QUESTIONS + ["答辩依据"]
@@ -106,6 +109,7 @@ class InsuranceCaseFormatter(BaseCaseFormatter):
             }
         )
         return template_data
+
 
 thisCase = CommonCaseRespondent()
 
