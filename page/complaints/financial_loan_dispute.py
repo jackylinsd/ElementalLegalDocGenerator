@@ -2,14 +2,19 @@ import streamlit as st
 from page.components.complaint import Plaintiff
 from page.components.jurisdiction_and_preservation import JurisdictionAndPreservation
 from page.components.header import header
+from page.components.ai_ui import AIComponent
 from page.components.section import create_text_section, create_radio_section, CommonCasePlaintiff
 from page.components.complaint import Defendant, Plaintiff, ThirdParty
 from utils.document_generator import DocumentGenerator, BaseCaseFormatter
 import json
 from utils.tools import st_date_input
 
+
+
 # 定义案件类型
 CASE_TYPE = "金融借款合同纠纷"
+
+ai_component = AIComponent(CASE_TYPE)
 
 # 定义诉讼请求和依据的问题
 REPLY_QUESTIONS = [
@@ -125,6 +130,7 @@ def claim(thisCase):
 
     st.subheader("6. 其他请求")
     q6_1 = st.text_area("其他请求", key="other_requests", placeholder="请输入其他请求")
+    ai_component.ai_optimize_text(q6_1,"q6_1_b")
     thisCase.reply_matters.append(
         {"type": "6. 其他请求", "information": q6_1}
     )
@@ -364,6 +370,7 @@ def fact(thisCase):
     st.subheader("17.其他需要说明的内容（可另附页）")
     q25_1 = st.text_area(
         "其他需要说明的内容（可另附页）", key="other_information", placeholder="请输入其他需要说明的内容（可另附页）")
+    ai_component.ai_optimize_text(q25_1,"q25_1_b")
     thisCase.reasons.append(
         {"type": "17. 其他需要说明的内容（可另附页）", "information": q25_1}
     )

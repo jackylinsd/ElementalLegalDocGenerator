@@ -2,6 +2,7 @@ import streamlit as st
 from page.components.complaint import Plaintiff
 from page.components.jurisdiction_and_preservation import JurisdictionAndPreservation
 from page.components.header import header
+from page.components.ai_ui import AIComponent
 from page.components.section import create_text_section, create_radio_section, CommonCasePlaintiff
 from page.components.complaint import Defendant, Plaintiff, ThirdParty
 from utils.document_generator import DocumentGenerator, BaseCaseFormatter
@@ -10,6 +11,8 @@ from utils.tools import st_date_input
 
 
 CASE_TYPE = "保证保险合同纠纷"
+
+ai_component = AIComponent(CASE_TYPE)
 
 REPLY_QUESTIONS = [
     "理赔款",
@@ -73,6 +76,7 @@ def claim(thisCase):
 
     st.subheader("4. 其他请求")
     q4_1 = st.text_area("其他请求", key="other_requests", placeholder="请输入其他请求")
+    ai_component.ai_optimize_text(q4_1,"q4_1_b")
     thisCase.reply_matters.append(
         {"type": "4. 其他请求", "information": q4_1}
     )
@@ -173,6 +177,7 @@ def fact(thisCase):
         )
     else:
         q12_1 = st.text_area("履行情况", key="claim_amount_2", placeholder="请输入履行情况的具体内容")
+        ai_component.ai_optimize_text(q12_1,"q12_1_b")
         thisCase.reasons.append(
             {"type": "6. 保证保险合同的履行情况", "information": f"{q12_1}"}
         )
@@ -197,12 +202,14 @@ def fact(thisCase):
         )
     else:
         q13_1 = st.text_area("追索情况", key="demand_amount_2", placeholder="请输入追索情况的具体内容")
+        ai_component.ai_optimize_text(q13_1,"q13_1_b")
         thisCase.reasons.append(
             {"type": "7. 追索情况", "information": f"{q13_1}"}
         )
 
     st.subheader("8. 其他需要说明的内容")
     q14_1 = st.text_area("其他需要说明的内容", key="other_notes", placeholder="请输入其他需要说明的内容")
+    ai_component.ai_optimize_text(q14_1,"q14_1_b")
     thisCase.reasons.append(
         {"type": "8. 其他需要说明的内容", "information": q14_1}
     )

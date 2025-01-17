@@ -8,6 +8,9 @@ from page.components.section import (
     create_text_section,
     CommonCaseRespondent,
 )
+from utils.ai_servers import AIServer
+
+ai_server = AIServer()
 
 CASE_TYPE = '银行信用卡纠纷'
 

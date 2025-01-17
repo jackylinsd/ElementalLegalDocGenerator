@@ -2,6 +2,7 @@ import streamlit as st
 from page.components.complaint import Plaintiff
 from page.components.jurisdiction_and_preservation import JurisdictionAndPreservation
 from page.components.header import header
+from page.components.ai_ui import AIComponent
 from page.components.section import create_text_section, create_radio_section, CommonCasePlaintiff
 from page.components.complaint import Defendant, Plaintiff, ThirdParty
 from utils.document_generator import DocumentGenerator, BaseCaseFormatter
@@ -10,6 +11,8 @@ from utils.tools import st_date_input
 
 # 定义案件类型
 CASE_TYPE = "物业服务合同纠纷"
+
+ai_component = AIComponent(CASE_TYPE)
 
 # 定义诉讼请求和依据的问题
 REPLY_QUESTIONS = [
@@ -63,6 +66,7 @@ def claim(thisCase):
 
     st.subheader("3. 其他请求")
     q3_1 = st.text_area("其他请求", key="other_requests", placeholder="请输入其他请求")
+    ai_component.ai_optimize_text(q3_1,"q3_1_b")
     thisCase.reply_matters.append(
         {"type": "3. 其他请求", "information": q3_1}
     )
@@ -102,6 +106,7 @@ def fact(thisCase):
     else:
         q6_t = st.text_area("合同签订情况", key="contract_info",
                             placeholder="合同主体、签订时间、地点、合同名称等")
+        ai_component.ai_optimize_text(q6_t,"q6_t_b")
         thisCase.reasons.append(
             {"type": "1. 物业服务合同或前期物业服务合同签订情况", "information": q6_t}
         )
@@ -175,6 +180,7 @@ def fact(thisCase):
     st.subheader("10. 催缴情况")
     q15_1 = st.text_area("催缴情况", key="collection_details",
                          placeholder="请输入催缴情况")
+    ai_component.ai_optimize_text(q15_1,"q15_1_b")
     thisCase.reasons.append(
         {"type": "10. 催缴情况", "information": q15_1}
     )
@@ -182,6 +188,7 @@ def fact(thisCase):
     st.subheader("11. 其他需要说明的内容")
     q16_1 = st.text_area("其他需要说明的内容", key="other_information",
                          placeholder="请输入其他需要说明的内容")
+    ai_component.ai_optimize_text(q16_1,"q16_1_b")
     thisCase.reasons.append(
         {"type": "11. 其他需要说明的内容", "information": q16_1}
     )

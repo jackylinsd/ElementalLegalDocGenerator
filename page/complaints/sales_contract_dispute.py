@@ -2,6 +2,7 @@ import streamlit as st
 from page.components.complaint import Plaintiff
 from page.components.jurisdiction_and_preservation import JurisdictionAndPreservation
 from page.components.header import header
+from page.components.ai_ui import AIComponent
 from page.components.section import create_text_section, create_radio_section, CommonCasePlaintiff
 from page.components.complaint import Defendant, Plaintiff, ThirdParty
 from utils.document_generator import DocumentGenerator, BaseCaseFormatter
@@ -10,6 +11,8 @@ from utils.tools import st_date_input
 
 # 定义案件类型
 CASE_TYPE = "买卖合同纠纷"
+
+ai_component = AIComponent(case_type=CASE_TYPE)
 
 # 定义诉讼请求和依据的问题
 REPLY_QUESTIONS = [
@@ -170,6 +173,7 @@ def claim(thisCase):
 
     st.subheader("8. 其他请求")
     q8_1 = st.text_area("其他请求", key="other_requests", placeholder="请输入其他请求")
+    ai_component.ai_optimize_text(q8_1,"q8_1_b")
     thisCase.reply_matters.append(
         {"type": "8. 其他请求", "information": q8_1}
     )
@@ -201,6 +205,7 @@ def fact(thisCase):
         )
     else:
         q11_t = st.text_area("签订情况", key="contract_info", placeholder="合同主体、签订时间、地点、合同名称等")
+        ai_component.ai_optimize_text(q11_t,"q11_t_b")
         thisCase.reasons.append(
             {"type": "1. 合同的签订情况", "information": q11_t}
         )
@@ -226,6 +231,7 @@ def fact(thisCase):
         )
     else:
         q13_t = st.text_area("标的物情况", key="item_info", placeholder="标的物名称、规格、质量、数量、单价、总价等")
+        ai_component.ai_optimize_text(q13_t,"q13_t_b")
         thisCase.reasons.append(
             {"type": "3. 买卖标的物情况", "information": q13_t}
         )
@@ -259,12 +265,14 @@ def fact(thisCase):
 
     st.subheader("5. 合同约定的交货时间、地点、方式、风险承担、安装、调试、验收")
     q15_1 = st.text_area("交货时间、地点、方式、风险承担、安装、调试、验收", key="delivery_details", placeholder="请输入交货时间、地点、方式、风险承担、安装、调试、验收")
+    ai_component.ai_optimize_text(q15_1,"q15_1_b")
     thisCase.reasons.append(
         {"type": "5. 合同约定的交货时间、地点、方式、风险承担、安装、调试、验收", "information": q15_1}
     )
 
     st.subheader("6. 合同约定的质量标准及检验方式、质量异议期限")
     q16_1 = st.text_area("质量标准及检验方式、质量异议期限", key="quality_standards", placeholder="请输入质量标准及检验方式、质量异议期限")
+    ai_component.ai_optimize_text(q16_1,"q16_1_b")
     thisCase.reasons.append(
         {"type": "6. 合同约定的质量标准及检验方式、质量异议期限", "information": q16_1}
     )
@@ -328,6 +336,7 @@ def fact(thisCase):
     q21_1 = st.radio("买卖合同标的物有无质量争议", ["无", "有"], key="quality_dispute", horizontal=True)
     if q21_1 == "有":
         q21_2 = st.text_area("具体情况", key="quality_dispute_details", placeholder="请输入具体情况")
+        ai_component.ai_optimize_text(q21_2,"q21_2_b")
         thisCase.reasons.append(
             {"type": "11. 买卖合同标的物有无质量争议", "information": f"有☑ 具体情况：{q21_2}\n无☐"}
         )
@@ -340,6 +349,7 @@ def fact(thisCase):
     q22_1 = st.radio("标的物质量规格或履行方式是否存在不符合约定的情况", ["否", "是"], key="non_conformance", horizontal=True)
     if q22_1 == "是":
         q22_2 = st.text_area("具体情况", key="non_conformance_details", placeholder="请输入具体情况")
+        ai_component.ai_optimize_text(q22_2,"q22_2_b")
         thisCase.reasons.append(
             {"type": "12. 标的物质量规格或履行方式是否存在不符合约定的情况", "information": f"是☑ 具体情况：{q22_2}\n否☐"}
         )
@@ -352,6 +362,7 @@ def fact(thisCase):
     q23_1 = st.radio("是否曾就标的物质量问题进行协商", ["否", "是"], key="quality_negotiation", horizontal=True)
     if q23_1 == "是":
         q23_2 = st.text_area("具体情况", key="quality_negotiation_details", placeholder="请输入具体情况")
+        ai_component.ai_optimize_text(q23_2,"q23_2_b")
         thisCase.reasons.append(
             {"type": "13. 是否曾就标的物质量问题进行协商", "information": f"是☑ 具体情况：{q23_2}\n否☐"}
         )
@@ -462,6 +473,7 @@ def fact(thisCase):
     
     st.subheader("22. 其他需要说明的内容（可另附页）")
     q32 = st.text_area("其他内容", key="other_guarantee_content")
+    ai_component.ai_optimize_text(q32,"q32_b")
     thisCase.reasons.append(
         {"type": "22. 其他需要说明的内容（可另附页）", "information": f"{q32}"}
     )

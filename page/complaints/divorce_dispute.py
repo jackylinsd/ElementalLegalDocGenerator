@@ -6,6 +6,7 @@ import json
 from page.components.complaint import Plaintiff, Defendant
 from page.components.jurisdiction_and_preservation import JurisdictionAndPreservation
 from page.components.header import header
+from page.components.ai_ui import AIComponent
 from utils.document_generator import DocumentGenerator, BaseCaseFormatter
 import logging
 from utils.tools import st_date_input
@@ -15,6 +16,7 @@ logger = logging.getLogger(__name__)
 
 CASE_TYPE = '离婚纠纷'
 
+ai_component = AIComponent(CASE_TYPE)
 
 class DivorceCaseFormatter(BaseCaseFormatter):
     """离婚案件数据格式化器"""
@@ -346,8 +348,11 @@ class DivorceCase:
 def claim(thisCase):
     # 1. 解除婚姻关系
     st.subheader("1. 解除婚姻关系")
-    thisCase.divorce_request = st.text_area(
+    c1 = st.text_area(
         "具体主张", key="divorce_request", placeholder="请输入解除婚姻关系的具体主张")
+    ai_component.ai_optimize_text(c1,"c1_b")
+    thisCase.divorce_request = c1
+
 
     # 2. 夫妻共同财产
     st.subheader("2. 夫妻共同财产")
@@ -567,63 +572,86 @@ def claim(thisCase):
 
     # 9. 其他请求
     st.subheader("9. 本表未列明的其他请求")
-    thisCase.other_requests = st.text_area(
+    c9 = st.text_area(
         "其他请求", key="other_requests", placeholder="请输入其他请求的具体内容")
-
+    ai_component.ai_optimize_text(c9,"c9_b")
+    thisCase.other_requests = c9
 
 def fact(thisCase):
     # 1. 婚姻关系基本情况
     st.subheader("1. 婚姻关系基本情况")
     thisCase.marriage_info["marriage_date"] = st_date_input(
         "结婚时间", key="marriage_date")
-    thisCase.marriage_info["children_info"] = st.text_area(
+    f1_2 = st.text_area(
         "生育子女情况", key="children_info", placeholder="请输入生育子女情况")
-    thisCase.marriage_info["living_conditions"] = st.text_area(
+    ai_component.ai_optimize_text(f1_2,"f1_2_b")
+    thisCase.marriage_info["children_info"] = f1_2
+    f1_3 = st.text_area(
         "双方生活情况", key="living_conditions", placeholder="请输入双方生活情况")
-    thisCase.marriage_info["divorce_reason"] = st.text_area(
+    ai_component.ai_optimize_text(f1_3,"f1_3_b")
+    thisCase.marriage_info["living_conditions"] = f1_3
+    f1_4 = st.text_area(
         "离婚事由", key="divorce_reason", placeholder="请输入离婚事由")
+    ai_component.ai_optimize_text(f1_4,"f1_4_b")
+    thisCase.marriage_info["divorce_reason"] = f1_4
     thisCase.marriage_info["previous_divorce"] = st.radio(
         "之前有无提起过离婚诉讼", ["无", "有"], key="previous_divorce", horizontal=True)
 
     # 2. 夫妻共同财产情况
     st.subheader("2. 夫妻共同财产情况")
-    thisCase.property_facts = st.text_area(
+    f2 = st.text_area(
         "事实和理由", key="property_facts", placeholder="请输入夫妻共同财产的事实和理由")
+    ai_component.ai_optimize_text(f2,"f2_b")
+    thisCase.property_facts = f2
 
     # 3. 夫妻共同债务情况
     st.subheader("3. 夫妻共同债务情况")
-    thisCase.debt_facts = st.text_area(
+    f3 = st.text_area(
         "事实和理由", key="debt_facts", placeholder="请输入夫妻共同债务的事实和理由")
+    ai_component.ai_optimize_text(f3,"f3_b")
+    thisCase.debt_facts = f3
 
     # 4. 子女直接抚养情况
     st.subheader("4. 子女直接抚养情况")
-    thisCase.custody_reason = st.text_area(
-        "子女应归原告或者被告直接抚养的事由", key="custody_reason", placeholder="请输入子女直接抚养的事由")
+    f4 = st.text_area(
+        "事实和理由", key="custody_facts", placeholder="请输入子女直接抚养的事实和理由")
+    ai_component.ai_optimize_text(f4,"f4_b")
+    thisCase.custody_reason = f4
 
     # 5. 子女抚养费情况
     st.subheader("5. 子女抚养费情况")
-    thisCase.child_support_reason = st.text_area(
-        "原告或者被告应支付抚养费及相应金额、支付方式的事由", key="child_support_reason", placeholder="请输入子女抚养费的事由")
+    f5 = st.text_area(
+        "事实和理由", key="child_support_facts", placeholder="请输入子女赡养事实和理由")
+    ai_component.ai_optimize_text(f5,"f5_b")
+    thisCase.child_support_reason = f5
 
     # 6. 子女探望权情况
-    st.subheader("6. 子女探望权情况")
-    thisCase.visitation_reason = st.text_area(
-        "不直接抚养子女一方应否享有探望权以及具体行使方式的事由", key="visitation_reason", placeholder="请输入子女探望权的事由")
+    st.subheader("6. 不直接抚养子女一方应否享有探望权以及具体行使方式的事由")
+    f6 = st.text_area(
+        "事实和理由", key="visitation_facts", placeholder="请输入子女探望权的事由")
+    ai_component.ai_optimize_text(f6,"f6_b")
+    thisCase.visitation_reason = f6
 
     # 7. 赔偿/补偿/经济帮助相关情况
-    st.subheader("7. 赔偿/补偿/经济帮助相关情况")
-    thisCase.compensation_reason = st.text_area(
-        "符合离婚损害赔偿、离婚经济补偿或离婚经济帮助的相关事实等", key="compensation_reason", placeholder="请输入赔偿/补偿/经济帮助的相关事实")
+    st.subheader("7. 符合离婚损害赔偿、离婚经济补偿或离婚经济帮助的相关事实等")
+    f7 = st.text_area(
+        "事实和理由", key="compensation_facts", placeholder="请输入赔偿/补偿/经济帮助的相关事实")
+    ai_component.ai_optimize_text(f7,"f7_b")
+    thisCase.compensation_reason = f7
 
     # 8. 其他
     st.subheader("8. 其他")
-    thisCase.other_information = st.text_area(
-        "其他", key="other_information", placeholder="请输入其他需要说明的内容")
+    f8 = st.text_area(
+        "事实和理由", key="other_facts", placeholder="请输入其他需要说明的内容")
+    ai_component.ai_optimize_text(f8,"f8_b")
+    thisCase.other_information = f8
 
     # 9. 诉请依据
     st.subheader("9. 诉请依据")
-    thisCase.legal_basis = st.text_area(
-        "法律及司法解释的规定，要写明具体条文", key="legal_basis", placeholder="请输入法律及司法解释的具体条文")
+    f9 = st.text_area(
+        "诉讼请求依据", key="claim_basis", placeholder="请输入诉讼请求依据")
+    ai_component.ai_optimize_text(f9,"f9_b")
+    thisCase.legal_basis = f9
 
     # 10. 其他
     st.subheader("10. 证据清单（可另附页）")

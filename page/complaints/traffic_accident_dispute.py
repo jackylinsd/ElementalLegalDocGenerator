@@ -2,6 +2,7 @@ import streamlit as st
 from page.components.complaint import Plaintiff
 from page.components.jurisdiction_and_preservation import JurisdictionAndPreservation
 from page.components.header import header
+from page.components.ai_ui import AIComponent
 from page.components.section import create_text_section, create_radio_section, CommonCasePlaintiff
 from page.components.complaint import Defendant, Plaintiff, ThirdParty
 from utils.document_generator import DocumentGenerator, BaseCaseFormatter
@@ -10,6 +11,8 @@ from utils.tools import st_date_input
 
 # 定义案件类型
 CASE_TYPE = "机动车交通事故责任纠纷"
+
+ai_component = AIComponent(case_type=CASE_TYPE)
 
 # 定义诉讼请求和依据的问题
 REPLY_QUESTIONS = [
@@ -115,6 +118,7 @@ def claim(thisCase):
 
     st.subheader("11. 其他费用")
     q11_1 = st.text_area("其他费用", key="other_cost", placeholder="请输入其他费用")
+    ai_component.ai_optimize_text(q11_1,"q11_1_b")
     thisCase.reply_matters.append(
         {"type": "11. 其他费用", "information": q11_1}
     )
@@ -124,24 +128,28 @@ def claim(thisCase):
 def fact(thisCase):
     st.subheader("1. 交通事故发生情况")
     q12_1 = st.text_area("事故发生情况", key="accident_details", placeholder="请输入事故发生情况")
+    ai_component.ai_optimize_text(q12_1,"q12_1_b")
     thisCase.reasons.append(
         {"type": "1. 交通事故发生情况", "information": q12_1}
     )
 
     st.subheader("2. 交通事故责任认定")
     q13_1 = st.text_area("责任认定情况", key="responsibility_details", placeholder="请输入责任认定情况")
+    ai_component.ai_optimize_text(q13_1,"q13_1_b")
     thisCase.reasons.append(
         {"type": "2. 交通事故责任认定", "information": q13_1}
     )
 
     st.subheader("3. 机动车投保情况")
     q14_1 = st.text_area("投保情况", key="insurance_details", placeholder="请输入机动车投保情况")
+    ai_component.ai_optimize_text(q14_1,"q14_1_b")
     thisCase.reasons.append(
         {"type": "3. 机动车投保情况", "information": q14_1}
     )
 
     st.subheader("4. 其他情况及法律依据")
     q15_1 = st.text_area("其他情况及法律依据", key="other_details", placeholder="请输入其他情况及法律依据")
+    ai_component.ai_optimize_text(q15_1,"q15_1_b")
     thisCase.reasons.append(
         {"type": "4. 其他情况及法律依据", "information": q15_1}
     )

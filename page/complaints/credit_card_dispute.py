@@ -1,6 +1,7 @@
 import streamlit as st
 from page.components.complaint import Plaintiff
 from page.components.jurisdiction_and_preservation import JurisdictionAndPreservation
+from page.components.ai_ui import AIComponent
 from page.components.header import header
 from page.components.section import create_text_section, create_radio_section, CommonCasePlaintiff
 from page.components.complaint import Defendant, Plaintiff, ThirdParty
@@ -8,8 +9,12 @@ from utils.document_generator import DocumentGenerator, BaseCaseFormatter
 import json
 from utils.tools import st_date_input
 
+
+
 # 定义案件类型
 CASE_TYPE = "银行信用卡纠纷"
+
+ai_component = AIComponent(CASE_TYPE)
 
 # 定义诉讼请求和依据的问题
 REPLY_QUESTIONS = [
@@ -91,9 +96,11 @@ def claim(thisCase):
 
     st.subheader("5. 其他请求")
     q5_1 = st.text_area("其他请求", key="other_requests", placeholder="请输入其他请求")
+    ai_component.ai_optimize_text(q5_1,"q5_1_b")
     thisCase.reply_matters.append(
         {"type": "5. 其他请求", "information": q5_1}
     )
+
 
     st.subheader("6. 标的总额")
     q6_1 = st.text_area("标的总额", key="total_amount", placeholder="请输入标的总额")
@@ -122,6 +129,7 @@ def fact(thisCase):
         )
     else:
         q8_t = st.text_input("请输入办理情况", key="q8_t", placeholder="信用卡卡号、信用卡登记权利人、办卡时间、办卡行等")
+        ai_component.ai_optimize_text(q8_t,"q8_t_b")
         thisCase.reasons.append(
             {"type": "1. 信用卡办理情况", "information": q8_t}
         )
@@ -171,6 +179,7 @@ def fact(thisCase):
     q13_1 = st.radio("是否向被告进行通知和催收", ["否", "是"], key="collection_notice", horizontal=True)
     if q13_1 == "是":
         q13_2 = st.text_area("具体情况", key="collection_details", placeholder="请输入具体情况")
+        ai_component.ai_optimize_text(q13_2,"q13_2_b")
         thisCase.reasons.append(
             {"type": "6. 是否向被告进行通知和催收", "information": f"是☑ 具体情况：{q13_2}\n否☐"}
         )
@@ -263,9 +272,11 @@ def fact(thisCase):
 
     st.subheader("14. 其他需要说明的内容（可另附页）")
     q21_1 = st.text_area("其他需要说明的内容", key="other_information", placeholder="请输入其他需要说明的内容")
+    ai_component.ai_optimize_text(q21_1,"q21_1_b")
     thisCase.reasons.append(
         {"type": "14. 其他需要说明的内容（可另附页）", "information": q21_1}
     )
+
 
     st.subheader("15. 证据清单（可另附页）")
     q22_1 = st.text_area("证据清单（可另附页）", key="evidence_list", placeholder="请输入证据清单（可另附页）")

@@ -2,6 +2,7 @@ import streamlit as st
 from page.components.complaint import Plaintiff
 from page.components.jurisdiction_and_preservation import JurisdictionAndPreservation
 from page.components.header import header
+from page.components.ai_ui import AIComponent
 from page.components.section import create_text_section, create_radio_section, CommonCasePlaintiff
 from page.components.complaint import Defendant, Plaintiff, ThirdParty
 from utils.document_generator import DocumentGenerator, BaseCaseFormatter
@@ -10,6 +11,8 @@ from utils.tools import st_date_input
 
 # 定义案件类型
 CASE_TYPE = "融资租赁合同纠纷"
+
+ai_component = AIComponent(CASE_TYPE)
 
 # 定义诉讼请求和依据的问题
 REPLY_QUESTIONS = [
@@ -144,6 +147,7 @@ def claim(thisCase):
     q6_1 = st.radio("是否主张担保权利", ["否", "是"], key="guarantee_rights", horizontal=True)
     if q6_1 == "是":
         q6_2 = st.text_area("内容", key="guarantee_details", placeholder="请输入担保权利内容")
+        ai_component.ai_optimize_text(q6_2,"q6_2_b")
         thisCase.reply_matters.append(
             {"type": "6. 是否主张担保权利", "information": f"是☑ 内容：{q6_2}\n否☐"}
         )
@@ -156,6 +160,7 @@ def claim(thisCase):
     q7_1 = st.radio("是否主张实现债权的费用", ["否", "是"], key="legal_fees", horizontal=True)
     if q7_1 == "是":
         q7_2 = st.text_area("费用明细", key="legal_fees_details", placeholder="请输入费用明细")
+        ai_component.ai_optimize_text(q7_2,"q7_2_b")
         thisCase.reply_matters.append(
             {"type": "7. 是否主张实现债权的费用", "information": f"是☑ 费用明细：{q7_2}\n否☐"}
         )
@@ -166,12 +171,14 @@ def claim(thisCase):
 
     st.subheader("8. 其他请求")
     q8_1 = st.text_area("其他请求", key="other_requests", placeholder="请输入其他请求")
+    ai_component.ai_optimize_text(q8_1,"q8_1_b")
     thisCase.reply_matters.append(
         {"type": "8. 其他请求", "information": q8_1}
     )
 
     st.subheader("9. 标的总额")
     q9_1 = st.text_area("标的总额", key="total_amount", placeholder="请输入标的总额")
+    ai_component.ai_optimize_text(q9_1,"q9_1_b")
     thisCase.reply_matters.append(
         {"type": "9. 标的总额", "information": q9_1}
     )
@@ -197,6 +204,7 @@ def fact(thisCase):
         )
     else:
         q11_t= st.text_area("签订情况", key="contract_info", placeholder="合同主体、签订时间、地点、合同名称等")
+        ai_component.ai_optimize_text(q11_t,"q11_t_b")
         thisCase.reasons.append(
             {"type": "1. 合同的签订情况", "information": q11_t}
         )
@@ -220,6 +228,7 @@ def fact(thisCase):
         )
     else:
         q13_t = st.text_area("租赁物情况", key="item_info", placeholder="租赁物名称、规格、质量、数量等")
+        ai_component.ai_optimize_text(q13_t,"q13_t_b")
         thisCase.reasons.append(
             {"type": "3. 租赁物情况", "information": q13_t}
         )
@@ -273,6 +282,7 @@ def fact(thisCase):
 
     st.subheader("7. 合同约定的违约责任")
     q17_1 = st.text_area("违约责任", key="breach_terms", placeholder="请输入违约责任")
+    ai_component.ai_optimize_text(q17_1,"q17_1_b")
     thisCase.reasons.append(
         {"type": "7. 合同约定的违约责任", "information": q17_1}
     )
@@ -281,6 +291,7 @@ def fact(thisCase):
     q18_1 = st.radio("是否约定加速到期条款", ["否", "是"], key="acceleration_clause", horizontal=True)
     if q18_1 == "是":
         q18_2 = st.text_area("具体内容", key="acceleration_details", placeholder="请输入具体内容")
+        ai_component.ai_optimize_text(q18_2,"q18_2_b")
         thisCase.reasons.append(
             {"type": "8. 是否约定加速到期条款", "information": f"是☑ 具体内容：{q18_2}\n否☐"}
         )
@@ -293,6 +304,7 @@ def fact(thisCase):
     q19_1 = st.radio("是否约定回收租赁物条件", ["否", "是"], key="recovery_conditions", horizontal=True)
     if q19_1 == "是":
         q19_2 = st.text_area("具体内容", key="recovery_details", placeholder="请输入具体内容")
+        ai_component.ai_optimize_text(q19_2,"q19_2_b")
         thisCase.reasons.append(
             {"type": "9. 是否约定回收租赁物条件", "information": f"是☑ 具体内容：{q19_2}\n否☐"}
         )
@@ -305,6 +317,7 @@ def fact(thisCase):
     q20_1 = st.radio("是否约定解除合同条件", ["否", "是"], key="termination_conditions", horizontal=True)
     if q20_1 == "是":
         q20_2 = st.text_area("具体内容", key="termination_details", placeholder="请输入具体内容")
+        ai_component.ai_optimize_text(q20_2,"q20_2_b")
         thisCase.reasons.append(
             {"type": "10. 是否约定解除合同条件", "information": f"是☑ 具体内容：{q20_2}\n否☐"}
         )
@@ -323,6 +336,7 @@ def fact(thisCase):
     q22_1 = st.radio("质量是否符合约定或使用目的", ["否", "是"], key="quality_conformance", horizontal=True)
     if q22_1 == "否":
         q22_2 = st.text_area("具体情况", key="quality_issues", placeholder="请输入具体情况")
+        ai_component.ai_optimize_text(q22_2,"q22_2_b")
         thisCase.reasons.append(
             {"type": "12. 租赁物情况", "information": f"质量符合约定或者承租人的使用目的☐\n存在瑕疵☑ 具体情况：{q22_2}"}
         )
@@ -432,6 +446,7 @@ def fact(thisCase):
 
     st.subheader("22. 其他需要说明的内容（可另附页）")
     q32_1 = st.text_area("其他需要说明的内容", key="other_information", placeholder="请输入其他需要说明的内容")
+    ai_component.ai_optimize_text(q32_1,"q32_1_b")
     thisCase.reasons.append(
         {"type": "22. 其他需要说明的内容（可另附页）", "information": q32_1}
     )

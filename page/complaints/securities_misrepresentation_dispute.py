@@ -2,6 +2,7 @@ import streamlit as st
 from page.components.complaint import Plaintiff
 from page.components.jurisdiction_and_preservation import JurisdictionAndPreservation
 from page.components.header import header
+from page.components.ai_ui import AIComponent
 from page.components.section import create_text_section, create_radio_section, CommonCasePlaintiff
 from page.components.complaint import Defendant, Plaintiff, ThirdParty
 from utils.document_generator import DocumentGenerator, BaseCaseFormatter
@@ -10,6 +11,9 @@ from utils.tools import st_date_input
 
 # 定义案件类型
 CASE_TYPE = "证券虚假陈述责任纠纷"
+
+ai_component = AIComponent(case_type=CASE_TYPE)
+
 
 # 定义诉讼请求和依据的问题
 REPLY_QUESTIONS = [
@@ -56,6 +60,7 @@ def claim(thisCase):
     q2_1 = st.radio("是否主张连带责任", ["是", "否"], key="joint_liability", horizontal=True)
     if q2_1 == "是":
         q2_2 = st.text_area("责任主体及责任范围", key="liability_details", placeholder="请输入责任主体及责任范围")
+        ai_component.ai_optimize_text(q2_2,"q2_2_b")
         thisCase.reply_matters.append(
             {"type": "2. 是否主张连带责任", "information": f"是☑ 责任主体及责任范围：{q2_2}\n否☐"}
         )
@@ -68,6 +73,7 @@ def claim(thisCase):
     q3_1 = st.radio("是否主张实现债权的费用", ["是", "否"], key="legal_fees", horizontal=True)
     if q3_1 == "是":
         q3_2 = st.text_area("费用明细", key="legal_fees_details", placeholder="请输入费用明细")
+        ai_component.ai_optimize_text(q3_2,"q3_2_b")
         thisCase.reply_matters.append(
             {"type": "3. 是否主张实现债权的费用", "information": f"是☑ 费用明细：{q3_2}\n否☐"}
         )
@@ -78,6 +84,7 @@ def claim(thisCase):
 
     st.subheader("4. 其他请求")
     q4_1 = st.text_area("其他请求", key="other_requests", placeholder="请输入其他请求")
+    ai_component.ai_optimize_text(q4_1,"q4_1_b")
     thisCase.reply_matters.append(
         {"type": "4. 其他请求", "information": q4_1}
     )
@@ -128,18 +135,21 @@ def fact(thisCase):
 
     st.subheader("4. 虚假陈述的重大性")
     q10_1 = st.text_area("虚假陈述的重大性", key="misrepresentation_significance", placeholder="请输入虚假陈述的重大性")
+    ai_component.ai_optimize_text(q10_1,"q10_1_b")
     thisCase.reasons.append(
         {"type": "4. 虚假陈述的重大性", "information": q10_1}
     )
 
     st.subheader("5. 虚假陈述与原告交易行为之间的因果关系")
     q11_1 = st.text_area("虚假陈述与原告交易行为之间的因果关系", key="causation_trading", placeholder="请输入虚假陈述与原告交易行为之间的因果关系")
+    ai_component.ai_optimize_text(q11_1,"q11_1_b")
     thisCase.reasons.append(
         {"type": "5. 虚假陈述与原告交易行为之间的因果关系", "information": q11_1}
     )
 
     st.subheader("6. 虚假陈述与原告损失之间的因果关系")
     q12_1 = st.text_area("虚假陈述与原告损失之间的因果关系", key="causation_loss", placeholder="请输入虚假陈述与原告损失之间的因果关系")
+    ai_component.ai_optimize_text(q12_1,"q12_1_b")
     thisCase.reasons.append(
         {"type": "6. 虚假陈述与原告损失之间的因果关系", "information": q12_1}
     )
@@ -149,24 +159,28 @@ def fact(thisCase):
     q13_2 = st.number_input("佣金和印花税损失", key="commission_stamp_duty_loss", placeholder="请输入佣金和印花税损失", min_value=0.0, step=0.01, format="%.2f")
     q13_3 = st.text_area("其他损失", key="other_losses", placeholder="请输入其他损失")
     q13_4 = st.text_area("明细", key="loss_details", placeholder="请输入明细")
+    ai_component.ai_optimize_text(q13_4,"q13_4_b")
     thisCase.reasons.append(
         {"type": "7. 原告损失情况", "information": f"因虚假陈述所造成的投资差额损失：{q13_1:.2f}元\n佣金和印花税损失：{q13_2:.2f}元\n其他损失：{q13_3}\n明细：{q13_4}"}
     )
 
     st.subheader("8. 请求发行人的控股股东、实际控制人、董监高、相关责任人员承担连带责任的情况")
     q14_1 = st.text_area("请求发行人的控股股东、实际控制人、董监高、相关责任人员承担连带责任的情况", key="issuer_liability", placeholder="请输入相关情况")
+    ai_component.ai_optimize_text(q14_1,"q14_1_b")
     thisCase.reasons.append(
         {"type": "8. 请求发行人的控股股东、实际控制人、董监高、相关责任人员承担连带责任的情况", "information": q14_1}
     )
 
     st.subheader("9. 请求保荐机构、承销机构、律师事务所、会计师事务所等其他机构及其相关责任人员承担连带责任的情况")
     q15_1 = st.text_area("请求保荐机构、承销机构、律师事务所、会计师事务所等其他机构及其相关责任人员承担连带责任的情况", key="other_entities_liability", placeholder="请输入相关情况")
+    ai_component.ai_optimize_text(q15_1,"q15_1_b")
     thisCase.reasons.append(
         {"type": "9. 请求保荐机构、承销机构、律师事务所、会计师事务所等其他机构及其相关责任人员承担连带责任的情况", "information": q15_1}
     )
 
     st.subheader("10. 其他需要说明的内容")
     q16_1 = st.text_area("其他需要说明的内容", key="other_information", placeholder="请输入其他需要说明的内容")
+    ai_component.ai_optimize_text(q16_1,"q16_1_b")
     thisCase.reasons.append(
         {"type": "10. 其他需要说明的内容", "information": q16_1}
     )
