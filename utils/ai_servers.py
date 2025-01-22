@@ -13,7 +13,7 @@ class AIServer:
         base_url: str = os.getenv("URL_BASE","")
     ):
         if not api_key or not base_url or not model:
-            raise ValueError("API_KEY URL_BASE MODEL 均必须先进行设置")
+            pass
 
         self.model = model
 
@@ -35,27 +35,31 @@ class AIServer:
         
         current_messages = self.messages.copy()
         current_messages.append({"role": "user", "content": prompt})
-        
-        response = self.client.chat.completions.create(
-            model=self.model,
-            messages=current_messages,
-            temperature=0.1,
-            max_tokens=1024
-        )
-        
-        return response.choices[0].message.content
+        try:
+            response = self.client.chat.completions.create(
+                model=self.model,
+                messages=current_messages,
+                temperature=0.1,
+                max_tokens=1024
+            )
+            return response.choices[0].message.content
+        except Exception as e:
+            return "出现错误，请检查你的API_KEY URL_BASE MODEL是否正确配置。错误原因：{}".format(e)
+
     
     async def optimize_text_async(self, text: str) -> str:
         prompt = f"请优化以下文字，使其更加专业，符合法律文本的需求，只需要返回优化后的文本:\n\n{text}"
         
         current_messages = self.messages.copy()
         current_messages.append({"role": "user", "content": prompt})
-        
-        response = await self.client.chat.completions.create(
-            model=self.model,
-            messages=current_messages,
-            temperature=0.1,
-            max_tokens=1024
-        )
-        
-        return response.choices[0].message.content
+        try:
+            response = await self.client.chat.completions.create(
+                model=self.model,
+                messages=current_messages,
+                temperature=0.1,
+                max_tokens=1024
+            )
+            
+            return response.choices[0].message.content
+        except Exception as e:
+            return "出现错误，请检查你的API_KEY URL_BASE MODEL是否正确配置。错误原因：{}".format(e)
