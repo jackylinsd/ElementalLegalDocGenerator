@@ -43,7 +43,7 @@ CASE_COMPLAINT_BOTH_PEOPLE_FIRST = [
 
 PLEADING_PAGE_PATH = {  # 诉状类型
     "起诉状": "complaints",
-    "答辩状": "answers",
+    "答辩状": "defendant",
 }
 
 CASE_TYPE_PAGE_PATH = {  # 案件类型
