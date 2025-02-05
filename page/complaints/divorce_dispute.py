@@ -689,10 +689,6 @@ st.header("事实和理由")
 fact(thisCase)
 
 if st.button("生成起诉状"):
-    # 输出 JSON 格式的案件信息
-    # st.write("案件信息（JSON 格式）:")
-    # st.json(thisCase.to_json())
-    # print(thisCase.to_json())
 
     try:
         with st.spinner("生成中..."):

@@ -58,17 +58,14 @@ class BaseCaseFormatter:
     def _format_party_informations(case_data):
         """格式化当事人信息（通用部分）"""
         party_informations = []
-        # print(case_data)
         plaintiff_case_type = case_data.get(
             "plaintiff", {}).get("case_type", {})
         is_plaintiff_both = True if plaintiff_case_type in CASE_COMPLAINT_PLAINTIFFS_BOTH else False
-        # print(is_plaintiff)
         respondent_case_type = case_data.get(
             "respondent", {}).get("case_type", {})
         is_respondent_both = True if respondent_case_type in CASE_COMPLAINT_RESPONDENTS_BOTH else False
 
         is_third_party = True if plaintiff_case_type not in CASE_COMPLAINT_PLAINTIFFS_NO_TP else False
-        # print(is_respondent)
 
         if BaseCaseFormatter.isComplaint:
             # 原告部分
@@ -484,10 +481,10 @@ class DocumentGenerator:
         if defendant_name:
             filename_parts.insert(1, f"{sanitized_defendant_name}、")
         filename = "-".join(filename_parts) + ".docx"
+        
         # 使用传入的格式化器格式化数据
-        # print("case", case)
         formatted_data = formatter_class.format_case(thisCase)
-        # print("fotmate_data", formatted_data)
+
         # 生成文档
         doc = DocxTemplate(template_path)
         doc.render(formatted_data)
