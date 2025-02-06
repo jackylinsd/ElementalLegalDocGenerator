@@ -481,9 +481,10 @@ class DocumentGenerator:
         if defendant_name:
             filename_parts.insert(1, f"{sanitized_defendant_name}、")
         filename = "-".join(filename_parts) + ".docx"
-        
+
         # 使用传入的格式化器格式化数据
         formatted_data = formatter_class.format_case(thisCase)
+        print(formatted_data)
 
         # 生成文档
         doc = DocxTemplate(template_path)

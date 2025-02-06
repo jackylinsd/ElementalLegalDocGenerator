@@ -25,11 +25,11 @@ REPLY_QUESTIONS = [
 ]
 
 
-
 def respondent_details(thisCase):
     """答辩事项部分"""
     for i, question in enumerate(REPLY_QUESTIONS, 1):
-        new_sections.create_radio_section(f"{i}. {question}", f"q{i}", thisCase.reply_matters)
+        new_sections.create_radio_section(
+            f"{i}. {question}", f"q{i}", thisCase.reply_matters,isDefendant=True)
 
     # 答辩依据部分
     st.subheader("10. 答辩的依据")
@@ -42,9 +42,6 @@ def respondent_details(thisCase):
     thisCase.reply_matters.append(f"证据清单：{evidence}")
 
 
-
-
-
 class LaborDisputeCaseFormatter(BaseCaseFormatter):
     """数据格式化器"""
 
@@ -55,7 +52,8 @@ class LaborDisputeCaseFormatter(BaseCaseFormatter):
     def format_case(case):
         """将案件对象转换为适合文档模板的格式"""
         case_data = json.loads(case.to_json())
-        template_data = super(LaborDisputeCaseFormatter, LaborDisputeCaseFormatter).format_case(case)
+        template_data = super(LaborDisputeCaseFormatter,
+                              LaborDisputeCaseFormatter).format_case(case)
 
         # 使用全局定义的问题列表
         reply_questions = REPLY_QUESTIONS + ["答辩的依据", "证据清单"]
@@ -76,10 +74,11 @@ class LaborDisputeCaseFormatter(BaseCaseFormatter):
                         )
                     )
                 ],
-                
+
             }
         )
         return template_data
+
 
 thisCase = CommonCaseRespondent()
 

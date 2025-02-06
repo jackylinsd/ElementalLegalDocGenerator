@@ -18,7 +18,7 @@ def respondent_details(thisCase: dict):
     st.subheader("1. 对解除婚姻关系的确认和异议")
     q1_options = st.radio(label="对解除婚姻关系的确认和异议", options=["确认", "异议"], key="q1_options", horizontal=True, label_visibility="collapsed")
     q1_fact = st.text_area(label="具体原因", value="", key="q1_fact", label_visibility="collapsed")
-    ai_server.ai_optimize_text(q1_fact,"q1_fact_b")
+    ai_server.ai_optimize_text(q1_fact,"q1_fact_b",isDefendant=True)
 
     if q1_options == "确认":
         q1_detail = f'确认☑      异议☐\n{q1_fact}'
@@ -30,7 +30,7 @@ def respondent_details(thisCase: dict):
     st.subheader("2. 对夫妻共同财产诉请的确认和异议")
     q2_options = st.radio(label="对夫妻共同财产诉请的确认和异议", options=["确认", "异议"], key="q2_options", horizontal=True, label_visibility="collapsed")
     q2_fact = st.text_area(label="具体原因", value="", key="q2_fact", label_visibility="collapsed")
-    ai_server.ai_optimize_text(q2_fact,"q2_fact_b")
+    ai_server.ai_optimize_text(q2_fact,"q2_fact_b",isDefendant=True)
 
     if q2_options == "确认":
         q2_detail = f'确认☑      异议☐\n{q2_fact}'
@@ -42,7 +42,7 @@ def respondent_details(thisCase: dict):
     st.subheader("3. 对夫妻共同债务诉请的确认和异议")
     q3_options = st.radio(label="对夫妻共同债务诉请的确认和异议", options=["确认", "异议"], key="q3_options", horizontal=True, label_visibility="collapsed")
     q3_fact = st.text_area(label="具体原因", value="", key="q3_fact", label_visibility="collapsed")
-    ai_server.ai_optimize_text(q3_fact,"q3_fact_b")
+    ai_server.ai_optimize_text(q3_fact,"q3_fact_b",isDefendant=True)
 
     if q3_options == "确认":
         q3_detail = f'确认☑      异议☐\n{q3_fact}'
@@ -54,7 +54,7 @@ def respondent_details(thisCase: dict):
     st.subheader("4. 对子女直接抚养诉请的确认和异议")
     q4_options = st.radio(label="对子女直接抚养诉请的确认和异议", options=["确认", "异议"], key="q4_options", horizontal=True, label_visibility="collapsed")
     q4_fact = st.text_area(label="具体原因", value="", key="q4_fact", label_visibility="collapsed")
-    ai_server.ai_optimize_text(q4_fact,"q4_fact_b")
+    ai_server.ai_optimize_text(q4_fact,"q4_fact_b",isDefendant=True)
 
     if q4_options == "确认":
         q4_detail = f'确认☑      异议☐\n{q4_fact}'
@@ -66,7 +66,7 @@ def respondent_details(thisCase: dict):
     st.subheader("5. 对子女抚养费诉请的确认和异议")
     q5_options = st.radio(label="对子女抚养费诉请的确认和异议", options=["确认", "异议"], key="q5_options", horizontal=True, label_visibility="collapsed")
     q5_fact = st.text_area(label="具体原因", value="", key="q5_fact", label_visibility="collapsed")
-    ai_server.ai_optimize_text(q5_fact,"q5_fact_b")
+    ai_server.ai_optimize_text(q5_fact,"q5_fact_b",isDefendant=True)
 
     if q5_options == "确认":
         q5_detail = f'确认☑      异议☐\n{q5_fact}'
@@ -78,7 +78,7 @@ def respondent_details(thisCase: dict):
     st.subheader("6. 对子女探望权诉请的确认和异议")
     q6_options = st.radio(label="对子女探望权诉请的确认和异议", options=["确认", "异议"], key="q6_options", horizontal=True, label_visibility="collapsed")
     q6_fact = st.text_area(label="具体原因", value="", key="q6_fact", label_visibility="collapsed")
-    ai_server.ai_optimize_text(q6_fact,"q6_fact_b")
+    ai_server.ai_optimize_text(q6_fact,"q6_fact_b",isDefendant=True)
 
     if q6_options == "确认":
         q6_detail = f'确认☑      异议☐\n{q6_fact}'
@@ -90,7 +90,7 @@ def respondent_details(thisCase: dict):
     st.subheader("7. 对赔偿/补偿/经济帮助的确认和异议")
     q7_options = st.radio(label="对赔偿/补偿/经济帮助的确认和异议", options=["确认", "异议"], key="q7_options", horizontal=True, label_visibility="collapsed")
     q7_fact = st.text_area(label="具体原因", value="", key="q7_fact", label_visibility="collapsed")
-    ai_server.ai_optimize_text(q7_fact,"q7_fact_b")
+    ai_server.ai_optimize_text(q7_fact,"q7_fact_b",isDefendant=True)
 
     if q7_options == "确认":
         q7_detail = f'确认☑      异议☐\n{q7_fact}'
@@ -101,19 +101,20 @@ def respondent_details(thisCase: dict):
     # 8. 其他事由
     st.subheader("8. 其他事由")
     q8_fact = st.text_area(label="其他事由", value="", key="q8_fact", label_visibility="collapsed")
-    ai_server.ai_optimize_text(q8_fact,"q8_fact_b")
+    ai_server.ai_optimize_text(q8_fact,"q8_fact_b",isDefendant=True)
     thisCase.reply_matters.append(q8_fact)
 
     # 9. 答辩的依据
     st.subheader("9. 答辩的依据")
     q9_fact = st.text_area(label="法律及司法解释的规定，要写明具体条文", value="", key="q9_fact", label_visibility="collapsed")
-    ai_server.ai_optimize_text(q9_fact,"q9_fact_b")
+    ai_server.ai_optimize_text(q9_fact,"q9_fact_b",isDefendant=True)
     thisCase.reply_matters.append(q9_fact)
 
     # 10. 证据清单（可另附页）
     st.subheader("10. 证据清单（可另附页）")
     q10_fact = st.text_area(label="证据清单", value="附页", key="q10_fact", label_visibility="collapsed")
     thisCase.reply_matters.append(q10_fact)
+
 class DivorceCaseFormatter(BaseCaseFormatter):
     """离婚案件数据格式化器"""
 

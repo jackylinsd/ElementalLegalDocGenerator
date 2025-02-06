@@ -10,7 +10,6 @@ from page.components.section import (
 from utils.ai_servers import AIServer
 
 
-
 CASE_TYPE = '银行信用卡纠纷'
 new_sections = CreateSections(CASE_TYPE)
 
@@ -41,10 +40,12 @@ REASON_QUESTIONS = [
     "有无其他免责/减责事由",
 ]
 
+
 def respondent_details(thisCase):
     """答辩事项部分"""
     for i, question in enumerate(REPLY_QUESTIONS, 1):
-        new_sections.create_radio_section(f"{i}. {question}", f"q{i}", thisCase.reply_matters)
+        new_sections.create_radio_section(
+            f"{i}. {question}", f"q{i}", thisCase.reply_matters, isDefendant=True)
 
     # 答辩依据部分
     st.subheader("7. 答辩依据")
@@ -52,14 +53,19 @@ def respondent_details(thisCase):
     law = st.text_area("法律规定", key="q7_2")
     thisCase.reply_matters.append(f"合同约定：{contract}\n法律规定：{law}")
 
+
 def fact_reason(thisCase):
     """事实和理由部分"""
     for i, question in enumerate(REASON_QUESTIONS, 1):
-        new_sections.create_radio_section(f"{i}. {question}", f"f{i}", thisCase.reasons)
+        new_sections.create_radio_section(
+            f"{i}. {question}", f"f{i}", thisCase.reasons)
 
     # 其他说明和证据清单
-    new_sections.create_text_section("15. 其他需要说明的内容", "f15_content", thisCase.reasons)
-    new_sections.create_text_section("16. 证据清单", "f16_content", thisCase.reasons)
+    new_sections.create_text_section(
+        "15. 其他需要说明的内容", "f15_content", thisCase.reasons, isDefendant=True)
+    new_sections.create_text_section(
+        "16. 证据清单", "f16_content", thisCase.reasons, isDefendant=True)
+
 
 class CreditCardCaseFormatter(BaseCaseFormatter):
     """数据格式化器"""
@@ -71,7 +77,8 @@ class CreditCardCaseFormatter(BaseCaseFormatter):
     def format_case(case):
         """将案件对象转换为适合文档模板的格式"""
         case_data = json.loads(case.to_json())
-        template_data = super(CreditCardCaseFormatter, CreditCardCaseFormatter).format_case(case)
+        template_data = super(CreditCardCaseFormatter,
+                              CreditCardCaseFormatter).format_case(case)
 
         # 使用全局定义的问题列表
         reply_questions = REPLY_QUESTIONS + ["答辩依据"]
@@ -113,6 +120,7 @@ class CreditCardCaseFormatter(BaseCaseFormatter):
             }
         )
         return template_data
+
 
 thisCase = CommonCaseRespondent()
 

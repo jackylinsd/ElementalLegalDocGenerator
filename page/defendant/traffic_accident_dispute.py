@@ -25,9 +25,9 @@ REPLY_QUESTIONS = [
 def respondent_details(thisCase):
     """答辩事项部分"""
     for i, question in enumerate(REPLY_QUESTIONS, 1):
-        new_sections.create_radio_section(f"{i}. {question}", f"q{i}", thisCase.reply_matters)
+        new_sections.create_radio_section(f"{i}. {question}", f"q{i}", thisCase.reply_matters,isDefendant=True)
 
-    new_sections.create_text_section("6. 证据清单（可另附页）", "q6", thisCase.reply_matters)
+    new_sections.create_text_section("6. 证据清单（可另附页）", "q6", thisCase.reply_matters,isDefendant=True)
 
 
 class TrafficAccidentCaseFormatter(BaseCaseFormatter):

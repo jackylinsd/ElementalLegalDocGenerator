@@ -68,7 +68,7 @@ class CommonCaseRespondent:
 class CreateSections:
     def __init__(self,case_type):
         self.ai_server = AIComponent(case_type)
-    def create_radio_section(self,title, key_prefix, target_list, options=["无", "有"]):
+    def create_radio_section(self,title, key_prefix, target_list, options=["无", "有"],isDefendant=False):
         """通用的单选项创建函数"""
         st.subheader(title)
         option = st.radio(
@@ -83,15 +83,15 @@ class CreateSections:
             detail = f"{options[0]}☑\n{options[1]}☐ 事实和理由："
         else:
             fact = st.text_area("事实和理由", key=f"{key_prefix}_fact")
-            self.ai_server.ai_optimize_text(fact,id=f"{key_prefix}_fact_b")
+            self.ai_server.ai_optimize_text(fact,id=f"{key_prefix}_fact_b",isDefendant=isDefendant)
             detail = f"{options[0]}☐\n{options[1]}☑ 事实和理由：{fact}"
 
         target_list.append(detail)
 
 
-    def create_text_section(self,title, key, target_list):
+    def create_text_section(self,title, key, target_list,isDefendant=False):
         """通用的文本输入部分创建函数"""
         st.subheader(title)
         content = st.text_area("", key=key)
-        self.ai_server.ai_optimize_text(content,id=f"{key}_b")
+        self.ai_server.ai_optimize_text(content,id=f"{key}_b",isDefendant=isDefendant)
         target_list.append(content)

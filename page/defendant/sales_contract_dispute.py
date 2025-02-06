@@ -4,7 +4,7 @@ from page.components.defendant import Respondent
 from page.components.header import header
 from utils.document_generator import DocumentGenerator, BaseCaseFormatter
 from page.components.section import (
-CreateSections,
+    CreateSections,
     CommonCaseRespondent,
 )
 
@@ -54,7 +54,8 @@ REASON_QUESTIONS = [
 def respondent_details(thisCase):
     """答辩事项部分"""
     for i, question in enumerate(REPLY_QUESTIONS, 1):
-        new_sections.create_radio_section(f"{i}. {question}", f"q{i}", thisCase.reply_matters)
+        new_sections.create_radio_section(
+            f"{i}. {question}", f"q{i}", thisCase.reply_matters, isDefendant=True)
 
     # 答辩依据部分
     st.subheader("8. 答辩依据")
@@ -66,11 +67,14 @@ def respondent_details(thisCase):
 def fact_reason(thisCase):
     """事实和理由部分"""
     for i, question in enumerate(REASON_QUESTIONS, 1):
-        new_sections.create_radio_section(f"{i}. {question}", f"f{i}", thisCase.reasons)
+        new_sections.create_radio_section(
+            f"{i}. {question}", f"f{i}", thisCase.reasons, isDefendant=True)
 
     # 其他说明和证据清单
-    new_sections.create_text_section("23. 其他需要说明的内容（可另附页）", "f23_content", thisCase.reasons)
-    new_sections.create_text_section("24. 证据清单（可另附页）", "f24_content", thisCase.reasons)
+    new_sections.create_text_section(
+        "23. 其他需要说明的内容（可另附页）", "f23_content", thisCase.reasons, isDefendant=True)
+    new_sections.create_text_section(
+        "24. 证据清单（可另附页）", "f24_content", thisCase.reasons, isDefendant=True)
 
 
 class SalesContractCaseFormatter(BaseCaseFormatter):
@@ -83,7 +87,8 @@ class SalesContractCaseFormatter(BaseCaseFormatter):
     def format_case(case):
         """将案件对象转换为适合文档模板的格式"""
         case_data = json.loads(case.to_json())
-        template_data = super(SalesContractCaseFormatter, SalesContractCaseFormatter).format_case(case)
+        template_data = super(SalesContractCaseFormatter,
+                              SalesContractCaseFormatter).format_case(case)
 
         # 使用全局定义的问题列表
         reply_questions = REPLY_QUESTIONS + ["答辩依据"]
@@ -125,7 +130,8 @@ class SalesContractCaseFormatter(BaseCaseFormatter):
             }
         )
         return template_data
-    
+
+
 thisCase = CommonCaseRespondent()
 
 # 页面标题

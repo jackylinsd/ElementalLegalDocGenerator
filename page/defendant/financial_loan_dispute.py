@@ -48,7 +48,7 @@ REASON_QUESTIONS = [
 def respondent_details(thisCase):
     """答辩事项部分"""
     for i, question in enumerate(REPLY_QUESTIONS, 1):
-        new_sections.create_radio_section(f"{i}. {question}", f"q{i}", thisCase.reply_matters)
+        new_sections.create_radio_section(f"{i}. {question}", f"q{i}", thisCase.reply_matters,isDefendant=True)
 
     # 答辩依据部分
     st.subheader("8. 答辩依据")
@@ -63,8 +63,8 @@ def fact_reason(thisCase):
         new_sections.create_radio_section(f"{i}. {question}", f"f{i}", thisCase.reasons)
 
     # 其他说明和证据清单
-    new_sections.create_text_section("18. 其他需要说明的内容（可另附页）", "f18_content", thisCase.reasons)
-    new_sections.create_text_section("19. 证据清单（可另附页）", "f19_content", thisCase.reasons)
+    new_sections.create_text_section("18. 其他需要说明的内容（可另附页）", "f18_content", thisCase.reasons,isDefendant=True)
+    new_sections.create_text_section("19. 证据清单（可另附页）", "f19_content", thisCase.reasons,isDefendant=True)
 
 
 class LoanContractCaseFormatter(BaseCaseFormatter):
