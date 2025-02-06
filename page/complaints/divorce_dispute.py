@@ -692,7 +692,7 @@ if st.button("生成起诉状"):
 
     try:
         with st.spinner("生成中..."):
-            doc_bytes, filename = DocumentGenerator.generate_document(
+            doc_bytes, filename,preview = DocumentGenerator.generate_document(
                 "complaint",
                 thisCase,
                 DivorceCaseFormatter,
@@ -700,6 +700,8 @@ if st.button("生成起诉状"):
                 thisCase.defendant.defendants[0]["name"],
             )
 
+        with st.expander("预览"):
+            st.markdown(preview, unsafe_allow_html=True)
         st.download_button(
             label="下载起诉状",
             data=doc_bytes,

@@ -48,6 +48,7 @@ class CommonCaseRespondent:
 
     def __init__(self):
         self.respondent = None
+        self.case_num = None
         self.reply_matters = []
         self.reasons = []
 

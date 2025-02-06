@@ -9,7 +9,6 @@ import json
 from utils.tools import st_date_input
 
 
-
 # 定义案件类型
 CASE_TYPE = "金融借款合同纠纷"
 
@@ -129,7 +128,7 @@ def claim(thisCase):
 
     st.subheader("6. 其他请求")
     q6_1 = st.text_area("其他请求", key="other_requests", placeholder="请输入其他请求")
-    ai_component.ai_optimize_text(q6_1,"q6_1_b")
+    ai_component.ai_optimize_text(q6_1, "q6_1_b")
     thisCase.reply_matters.append(
         {"type": "6. 其他请求", "information": q6_1}
     )
@@ -365,11 +364,11 @@ def fact(thisCase):
     else:
         thisCase.reasons.append(
             {"type": "16. 其他担保方式", "information": f"是☐ 担保形式：\n签订时间：\n否☑"})
-        
+
     st.subheader("17.其他需要说明的内容（可另附页）")
     q25_1 = st.text_area(
         "其他需要说明的内容（可另附页）", key="other_information", placeholder="请输入其他需要说明的内容（可另附页）")
-    ai_component.ai_optimize_text(q25_1,"q25_1_b")
+    ai_component.ai_optimize_text(q25_1, "q25_1_b")
     thisCase.reasons.append(
         {"type": "17. 其他需要说明的内容（可另附页）", "information": q25_1}
     )
@@ -440,13 +439,16 @@ fact(thisCase)
 if st.button("生成起诉状"):
     try:
         with st.spinner("生成中..."):
-            doc_bytes, filename = DocumentGenerator.generate_document(
+            doc_bytes, filename, preview = DocumentGenerator.generate_document(
                 "complaint",
                 thisCase,
                 FinancialLoanCaseFormatter,
                 thisCase.plaintiff.plaintiffs[0].get("name", ""),
                 thisCase.defendant.defendants[0].get("name", ""),
             )
+            
+        with st.expander("预览"):
+            st.markdown(preview, unsafe_allow_html=True)
 
         st.download_button(
             label="下载起诉状",

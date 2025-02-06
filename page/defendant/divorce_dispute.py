@@ -133,7 +133,8 @@ class DivorceCaseFormatter(BaseCaseFormatter):
 
             # 添加离婚案件的自定义部分
             template_data.update({
-                "reply_matters": DivorceCaseFormatter._format_reply_matters(case_data)
+                "reply_matters": DivorceCaseFormatter._format_reply_matters(case_data),
+                "case_num": case_data.get("case_num", "")
             })
 
             return template_data
@@ -225,13 +226,14 @@ if st.button("生成答辩状"):
 
     try:
         with st.spinner("生成中..."):
-            doc_bytes, filename = DocumentGenerator.generate_document(
+            doc_bytes, filename,preview = DocumentGenerator.generate_document(
                 "defense_2p",
                 thisCase,
                 DivorceCaseFormatter,
                 thisCase.respondent.respondents[0]["name"],
             )
-
+        with st.expander("预览"):
+            st.markdown(preview, unsafe_allow_html=True)
         st.download_button(
             label="下载答辩状",
             data=doc_bytes,

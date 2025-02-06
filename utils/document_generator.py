@@ -484,7 +484,8 @@ class DocumentGenerator:
 
         # 使用传入的格式化器格式化数据
         formatted_data = formatter_class.format_case(thisCase)
-        # print(formatted_data)
+        print(formatted_data)
+        preview_data = form_json_to_markdown(formatted_data, doc_type)
 
         # 生成文档
         doc = DocxTemplate(template_path)
@@ -495,4 +496,64 @@ class DocumentGenerator:
         doc.save(doc_stream)
         doc_stream.seek(0)
 
-        return doc_stream.getvalue(), filename
+        return doc_stream.getvalue(), filename, preview_data
+
+def form_json_to_markdown(form_data: dict, doc_type: str = "complaint") -> str:
+    """
+    将表单JSON数据转换为Markdown表格格式
+    
+    Args:
+        form_data: 表单数据字典
+        doc_type: 文书类型，可选值："complaint"或"defense"
+    """
+    markdown = []
+    
+    # 添加标题
+    markdown.append("#### 填写内容预览")
+    markdown.append(f"#### 案由：{form_data['case_type']}")
+    if doc_type == "defense":
+        markdown.append(f"##### 案号：{form_data['case_num']}")
+    markdown.append(f"##### 填写日期：{form_data['date']}\n")
+    
+    # 处理当事人信息
+    markdown.append("##### 当事人信息")
+    markdown.append("| 项目 | 内容 |")
+    markdown.append("|------|------|")
+    for party in form_data['party_informations']:
+        information = party['information'].replace('\n', '<br>')
+        markdown.append(f"| {party['type']} | {information} |")
+    markdown.append("")
+    
+    # 处理管辖与保全信息
+    if 'competent_preservation' in form_data and form_data['competent_preservation']:
+        markdown.append("##### 管辖与保全")
+        markdown.append("| 项目 | 内容 |")
+        markdown.append("|------|------|")
+        for item in form_data['competent_preservation']:
+            information = item['information'].replace('\n', '<br>')
+            markdown.append(f"| {item['type']} | {information} |")     
+        markdown.append("")
+    
+    # 处理请求/答辩事项
+    if 'reply_matters' in form_data:
+        section_title = "诉讼请求" if doc_type == "complaint" else "答辩事项"
+        markdown.append(f"##### {section_title}")
+        markdown.append("| 项目 | 内容 |")
+        markdown.append("|------|------|")
+        for item in form_data['reply_matters']:
+            information = item['information'].replace('\n', '<br>')
+            markdown.append(f"| {item['type']} | {information} |")    
+        markdown.append("")
+    
+    # 处理事实与理由
+    if 'reasons' in form_data and form_data['reasons']:
+        markdown.append("##### 事实与理由")
+        markdown.append("| 项目 | 内容 |")
+        markdown.append("|------|------|")
+        for item in form_data['reasons']:
+            information = item['information'].replace('\n', '<br>')
+            markdown.append(f"| {item['type']} | {information} |")    
+        markdown.append("")
+    
+    return "\n".join(markdown)
+
