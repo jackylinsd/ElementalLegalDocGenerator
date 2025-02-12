@@ -60,7 +60,7 @@ CASE_TYPE_PAGE_PATH = {  # 案件类型
     "证券虚假陈述责任纠纷": "securities_misrepresentation_dispute.py",
 }
 
-CASE_COMPLAINT_DEFENDANT_NO_NP = ["离婚纠纷"]
+CASE_COMPLAINT_DEFENDANT_NO_NP = ["离婚纠纷","劳动争议纠纷"]
 
 
 CASE_SPECIAL_DEFENDANT_COMPANY_TYPE = {

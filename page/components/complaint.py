@@ -179,8 +179,8 @@ class Defendant:
         for i in range(num_defendants):
             if self.case_type in CASE_COMPLAINT_DEFENDANT_NO_NP:
                 self._defendant_people_info(i, num_defendants)
-            elif self.case_type in CASE_SPECIAL_DEFENDANT_COMPANY_TYPE:
-                self._defendant_company_info(i, num_defendants)
+            # elif self.case_type in CASE_SPECIAL_DEFENDANT_COMPANY_TYPE:
+            #     self._defendant_company_info(i, num_defendants)
             else:
                 defendant_type = st.radio(f"被告 {i + 1} 类型", ["自然人", "法人/非法人组织"], key=f"defendant_type_{i}", horizontal=True)
                 if defendant_type == "自然人":
