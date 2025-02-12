@@ -15,6 +15,7 @@ new_sections = CreateSections(CASE_TYPE)
 # 答辩事项问题列表
 REPLY_QUESTIONS = [
     "对理赔款有无异议",
+    "对保险费、违约金等有无异议",
     "对实现债权的费用有无异议",
     "对其他请求有无异议",
     "对标的总额有无异议",
