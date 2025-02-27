@@ -16,12 +16,12 @@ new_sections = CreateSections(CASE_TYPE)
 REPLY_QUESTIONS = [
     "对工资支付诉请的确认和异议",
     "对未签订书面劳动合同双倍工资诉请的确认和异议",
+    "对加班费诉请的确认和异议",
     "对未休年休假工资诉请的确认和异议",
     "对未依法缴纳社会保险费造成的经济损失诉请的确认和异议",
     "对解除劳动合同经济补偿诉请的确认和异议",
     "对违法解除劳动合同赔偿金诉请的确认和异议",
-    "对劳动仲裁相关情况的确认和异议",
-    "其他事由",
+    "对劳动仲裁相关情况的确认和异议"
 ]
 
 
@@ -30,6 +30,11 @@ def respondent_details(thisCase):
     for i, question in enumerate(REPLY_QUESTIONS, 1):
         new_sections.create_radio_section(
             f"{i}. {question}", f"q{i}", thisCase.reply_matters,isDefendant=True)
+        
+    new_sections.create_text_section(
+        "9. 其他事由", "f9_content", thisCase.reasons, isDefendant=True)
+    
+
 
     # 答辩依据部分
     st.subheader("10. 答辩的依据")
