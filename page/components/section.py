@@ -73,11 +73,11 @@ class CreateSections:
         """通用的单选项创建函数"""
         st.subheader(title)
         option = st.radio(
-            "",
+            f"{key_prefix}_options",
             options,
             key=f"{key_prefix}_options",
             horizontal=True,
-            label_visibility="collapsed",
+            label_visibility="hidden",
         )
 
         if option == options[0]:
@@ -93,6 +93,6 @@ class CreateSections:
     def create_text_section(self,title, key, target_list,isDefendant=False):
         """通用的文本输入部分创建函数"""
         st.subheader(title)
-        content = st.text_area("", key=key)
+        content = st.text_area(f"{key}_b", key=key,label_visibility="hidden")
         self.ai_server.ai_optimize_text(content,id=f"{key}_b",isDefendant=isDefendant)
         target_list.append(content)
