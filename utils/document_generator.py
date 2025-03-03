@@ -458,45 +458,49 @@ class DocumentGenerator:
         Returns:
             tuple: (文件字节流, 文件名)
         """
-        # 验证文档类型
-        if doc_type not in cls.DOCUMENT_TYPES:
-            raise ValueError(f"无效的文档类型: {doc_type}")
+        try:
+            # 验证文档类型
+            if doc_type not in cls.DOCUMENT_TYPES:
+                raise ValueError(f"无效的文档类型: {doc_type}")
 
-        # 获取当前目录并生成模板文件的绝对路径
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        template_path = os.path.join(current_dir, "..", template_dir, cls.TEMPLATE_FILES[doc_type])
-        template_path = os.path.abspath(template_path)
+            # 获取当前目录并生成模板文件的绝对路径
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            template_path = os.path.join(current_dir, "..", template_dir, cls.TEMPLATE_FILES[doc_type])
+            template_path = os.path.abspath(template_path)
 
-        if not os.path.exists(template_path):
-                    raise FileNotFoundError(f"找不到模板文件: {template_path}")
+            if not os.path.exists(template_path):
+                        raise FileNotFoundError(f"找不到模板文件: {template_path}")
 
-        # 清理文件名中的非法字符
-        sanitized_plaintiff_name = cls.sanitize_filename(plaintiff_name)
-        sanitized_defendant_name = cls.sanitize_filename(defendant_name)
+            # 清理文件名中的非法字符
+            sanitized_plaintiff_name = cls.sanitize_filename(plaintiff_name)
+            sanitized_defendant_name = cls.sanitize_filename(defendant_name)
 
-        # 生成文件名
-        current_date = datetime.now().strftime("%Y%m%d")
-        doc_type_name = cls.DOCUMENT_TYPES[doc_type]
-        filename_parts = [sanitized_plaintiff_name, doc_type_name, current_date]
-        if defendant_name:
-            filename_parts.insert(1, f"{sanitized_defendant_name}、")
-        filename = "-".join(filename_parts) + ".docx"
+            # 生成文件名
+            current_date = datetime.now().strftime("%Y%m%d")
+            doc_type_name = cls.DOCUMENT_TYPES[doc_type]
+            filename_parts = [sanitized_plaintiff_name, doc_type_name, current_date]
+            if defendant_name:
+                filename_parts.insert(1, f"{sanitized_defendant_name}、")
+            filename = "-".join(filename_parts) + ".docx"
 
-        # 使用传入的格式化器格式化数据
-        formatted_data = formatter_class.format_case(thisCase)
-        # print(formatted_data)
-        preview_data = form_json_to_markdown(formatted_data, doc_type)
+            # 使用传入的格式化器格式化数据
+            formatted_data = formatter_class.format_case(thisCase)
+            # print(formatted_data)
+            preview_data = form_json_to_markdown(formatted_data, doc_type)
 
-        # 生成文档
-        doc = DocxTemplate(template_path)
-        doc.render(formatted_data)
+            # 生成文档
+            doc = DocxTemplate(template_path)
+            doc.render(formatted_data)
 
-        # 将文档保存到字节流
-        doc_stream = io.BytesIO()
-        doc.save(doc_stream)
-        doc_stream.seek(0)
+            # 将文档保存到字节流
+            doc_stream = io.BytesIO()
+            doc.save(doc_stream)
+            doc_stream.seek(0)
 
-        return doc_stream.getvalue(), filename, preview_data
+            return doc_stream.getvalue(), filename, preview_data
+        except Exception as e:
+            logger.error(f"生成文档时出错: {str(e)}")
+            return None, None, None
 
 def form_json_to_markdown(form_data: dict, doc_type: str = "complaint") -> str:
     """
@@ -506,54 +510,58 @@ def form_json_to_markdown(form_data: dict, doc_type: str = "complaint") -> str:
         form_data: 表单数据字典
         doc_type: 文书类型，可选值："complaint"或"defense"
     """
-    markdown = []
-    
-    # 添加标题
-    markdown.append("#### 填写内容预览")
-    markdown.append(f"#### 案由：{form_data['case_type']}")
-    if doc_type == "defense":
-        markdown.append(f"##### 案号：{form_data['case_num']}")
-    markdown.append(f"##### 填写日期：{form_data['date']}\n")
-    
-    # 处理当事人信息
-    markdown.append("##### 当事人信息")
-    markdown.append("| 项目 | 内容 |")
-    markdown.append("|------|------|")
-    for party in form_data['party_informations']:
-        information = party['information'].replace('\n', '<br>')
-        markdown.append(f"| {party['type']} | {information} |")
-    markdown.append("")
-    
-    # 处理管辖与保全信息
-    if 'competent_preservation' in form_data and form_data['competent_preservation']:
-        markdown.append("##### 管辖与保全")
+    try:
+        markdown = []
+        
+        # 添加标题
+        markdown.append("#### 填写内容预览")
+        markdown.append(f"#### 案由：{form_data['case_type']}")
+        if doc_type == "defense":
+            markdown.append(f"##### 案号：{form_data['case_num']}")
+        markdown.append(f"##### 填写日期：{form_data['date']}\n")
+        
+        # 处理当事人信息
+        markdown.append("##### 当事人信息")
         markdown.append("| 项目 | 内容 |")
         markdown.append("|------|------|")
-        for item in form_data['competent_preservation']:
-            information = item['information'].replace('\n', '<br>')
-            markdown.append(f"| {item['type']} | {information} |")     
+        for party in form_data['party_informations']:
+            information = party['information'].replace('\n', '<br>')
+            markdown.append(f"| {party['type']} | {information} |")
         markdown.append("")
-    
-    # 处理请求/答辩事项
-    if 'reply_matters' in form_data:
-        section_title = "诉讼请求" if doc_type == "complaint" else "答辩事项"
-        markdown.append(f"##### {section_title}")
-        markdown.append("| 项目 | 内容 |")
-        markdown.append("|------|------|")
-        for item in form_data['reply_matters']:
-            information = item['information'].replace('\n', '<br>')
-            markdown.append(f"| {item['type']} | {information} |")    
-        markdown.append("")
-    
-    # 处理事实与理由
-    if 'reasons' in form_data and form_data['reasons']:
-        markdown.append("##### 事实与理由")
-        markdown.append("| 项目 | 内容 |")
-        markdown.append("|------|------|")
-        for item in form_data['reasons']:
-            information = item['information'].replace('\n', '<br>')
-            markdown.append(f"| {item['type']} | {information} |")    
-        markdown.append("")
-    
-    return "\n".join(markdown)
+        
+        # 处理管辖与保全信息
+        if 'competent_preservation' in form_data and form_data['competent_preservation']:
+            markdown.append("##### 管辖与保全")
+            markdown.append("| 项目 | 内容 |")
+            markdown.append("|------|------|")
+            for item in form_data['competent_preservation']:
+                information = item['information'].replace('\n', '<br>')
+                markdown.append(f"| {item['type']} | {information} |")     
+            markdown.append("")
+        
+        # 处理请求/答辩事项
+        if 'reply_matters' in form_data:
+            section_title = "诉讼请求" if doc_type == "complaint" else "答辩事项"
+            markdown.append(f"##### {section_title}")
+            markdown.append("| 项目 | 内容 |")
+            markdown.append("|------|------|")
+            for item in form_data['reply_matters']:
+                information = item['information'].replace('\n', '<br>')
+                markdown.append(f"| {item['type']} | {information} |")    
+            markdown.append("")
+        
+        # 处理事实与理由
+        if 'reasons' in form_data and form_data['reasons']:
+            markdown.append("##### 事实与理由")
+            markdown.append("| 项目 | 内容 |")
+            markdown.append("|------|------|")
+            for item in form_data['reasons']:
+                information = item['information'].replace('\n', '<br>')
+                markdown.append(f"| {item['type']} | {information} |")    
+            markdown.append("")
+        
+        return "\n".join(markdown)
+    except Exception as e:
+        logger.error(f"将表单JSON数据转换为Markdown表格格式时出错: {str(e)}")
+        return ""
 
