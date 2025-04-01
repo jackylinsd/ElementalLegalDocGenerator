@@ -44,9 +44,9 @@ thisCase = CommonCasePlaintiff()
 # 定义诉讼请求和依据部分
 def claim(thisCase):
     st.subheader("1. 是否主张工资支付")
-    q1_1 = st.radio("是否主张工资支付", ["是", "否"], key="wage_claim", horizontal=True)
+    q1_1 = st.radio("请选择是否主张用人单位拖欠或未足额支付工资（包括基本工资、奖金、津贴等）", ["是", "否"], key="wage_claim", horizontal=True)
     if q1_1 == "是":
-        q1_2 = st.text_area("明细", key="wage_details", placeholder="请输入工资支付明细")
+        q1_2 = st.text_area("明细（需要填写拖欠工资的具体金额、时间段及计算方式，以及考虑提交工资条、打卡记录、银行流水等证据）", key="wage_details", placeholder="请输入工资支付明细")
         ai_component.ai_optimize_text(q1_2, "q1_2_b")
         thisCase.reply_matters.append(
             {"type": "1. 是否主张工资支付", "information": f"是☑ 明细：{q1_2}\n否☐"}
@@ -57,9 +57,9 @@ def claim(thisCase):
         )
 
     st.subheader("2. 是否主张未签订书面劳动合同")
-    q2_1 = st.radio("是否主张未签订书面劳动合同", ["是", "否"], key="contract_claim", horizontal=True)
+    q2_1 = st.radio("请选择是否主张用人单位未依法与劳动者签订书面劳动合同（需满足已建立劳动关系满一个月的条件）", ["是", "否"], key="contract_claim", horizontal=True)
     if q2_1 == "是":
-        q2_2 = st.text_area("明细", key="contract_details", placeholder="请输入未签订书面劳动合同明细")
+        q2_2 = st.text_area("明细（需要填写未签订书面劳动合同的起止时间，已工作时长，以及考虑提交工牌、考勤记录、工作证明等证据）", key="contract_details", placeholder="请输入未签订书面劳动合同明细")
         ai_component.ai_optimize_text(q2_2, "q2_2_b")
         thisCase.reply_matters.append(
             {"type": "2. 是否主张未签订书面劳动合同", "information": f"是☑ 明细：{q2_2}\n否☐"}
@@ -70,9 +70,9 @@ def claim(thisCase):
         )
 
     st.subheader("3. 是否主张加班费")
-    q3_1 = st.radio("是否主张加班费", ["是", "否"], key="overtime_claim", horizontal=True)
+    q3_1 = st.radio("请选择是否主张用人单位未依法支付加班工资（包括工作日延时、休息日及法定节假日加班工资）", ["是", "否"], key="overtime_claim", horizontal=True)
     if q3_1 == "是":
-        q3_2 = st.text_area("明细", key="overtime_details", placeholder="请输入加班费明细")
+        q3_2 = st.text_area("明细（需要填写加班时间、具体加班小时数、加班费计算方式，以及考虑提交考勤表、加班申请单、工作记录等证据）", key="overtime_details", placeholder="请输入加班费明细")
         ai_component.ai_optimize_text(q3_2, "q3_2_b")
         thisCase.reply_matters.append(
             {"type": "3. 是否主张加班费", "information": f"是☑ 明细：{q3_2}\n否☐"}
@@ -83,9 +83,9 @@ def claim(thisCase):
         )
 
     st.subheader("4. 是否主张未休年休假工资")
-    q4_1 = st.radio("是否主张未休年休假工资", ["是", "否"], key="vacation_claim", horizontal=True)
+    q4_1 = st.radio("请选择是否主张用人单位未依法安排年休假或未支付未休年休假工资报酬（累计工作满12个月有年休假权利）", ["是", "否"], key="vacation_claim", horizontal=True)
     if q4_1 == "是":
-        q4_2 = st.text_area("明细", key="vacation_details", placeholder="请输入未休年休假工资明细")
+        q4_2 = st.text_area("明细（需要填写工作年限、应休年假天数、实际休假天数、薪资标准及计算方式，以及考虑提交劳动合同、工资单、休假申请记录等证据）", key="vacation_details", placeholder="请输入未休年休假工资明细")
         ai_component.ai_optimize_text(q4_2, "q4_2_b")
         thisCase.reply_matters.append(
             {"type": "4. 是否主张未休年休假工资", "information": f"是☑ 明细：{q4_2}\n否☐"}
@@ -96,9 +96,9 @@ def claim(thisCase):
         )
 
     st.subheader("5. 是否主张未依法缴纳社会保险")
-    q5_1 = st.radio("是否主张未依法缴纳社会保险", ["是", "否"], key="social_security_claim", horizontal=True)
+    q5_1 = st.radio("请选择是否主张用人单位未依法为劳动者缴纳社会保险（养老、医疗、失业、工伤、生育保险）", ["是", "否"], key="social_security_claim", horizontal=True)
     if q5_1 == "是":
-        q5_2 = st.text_area("明细", key="social_security_details", placeholder="请输入未依法缴纳社会保险明细")
+        q5_2 = st.text_area("明细（需要填写未缴纳社保的险种、时间段、应缴基数，以及考虑提交社保缴费记录、工资标准证明、社保局证明等证据）", key="social_security_details", placeholder="请输入未依法缴纳社会保险明细")
         ai_component.ai_optimize_text(q5_2, "q5_2_b",isDefendant=False)
         thisCase.reply_matters.append(
             {"type": "5. 是否主张未依法缴纳社会保险", "information": f"是☑ 明细：{q5_2}\n否☐"}
@@ -109,9 +109,9 @@ def claim(thisCase):
         )
 
     st.subheader("6. 是否主张解除劳动合同经济补偿")
-    q6_1 = st.radio("是否主张解除劳动合同经济补偿", ["是", "否"], key="compensation_claim", horizontal=True)
+    q6_1 = st.radio("请选择是否主张依法解除劳动合同的经济补偿金（用人单位违法或依法终止合同应支付的补偿）", ["是", "否"], key="compensation_claim", horizontal=True)
     if q6_1 == "是":
-        q6_2 = st.text_area("明细", key="compensation_details", placeholder="请输入解除劳动合同经济补偿明细")
+        q6_2 = st.text_area("明细（需要填写劳动合同解除的原因、方式、时间、工作年限、月平均工资及计算方式，以及考虑提交解除合同通知书、工资证明等证据）", key="compensation_details", placeholder="请输入解除劳动合同经济补偿明细")
         ai_component.ai_optimize_text(q6_2, "q6_2_b",isDefendant=False)
         thisCase.reply_matters.append(
             {"type": "6. 是否主张解除劳动合同经济补偿", "information": f"是☑ 明细：{q6_2}\n否☐"}
@@ -122,9 +122,9 @@ def claim(thisCase):
         )
 
     st.subheader("7. 是否主张违法解除劳动合同赔偿")
-    q7_1 = st.radio("是否主张违法解除劳动合同赔偿", ["是", "否"], key="illegal_dismissal_claim", horizontal=True)
+    q7_1 = st.radio("请选择是否主张用人单位违法解除或终止劳动合同的赔偿金（按劳动合同法第八十七条规定的双倍赔偿）", ["是", "否"], key="illegal_dismissal_claim", horizontal=True)
     if q7_1 == "是":
-        q7_2 = st.text_area("明细", key="illegal_dismissal_details", placeholder="请输入违法解除劳动合同赔偿明细")
+        q7_2 = st.text_area("明细（需要填写用人单位违法解除合同的具体情形、时间、主张双倍赔偿的金额及计算方式，以及考虑提交解除通知书、录音录像、证人证言等证据）", key="illegal_dismissal_details", placeholder="请输入违法解除劳动合同赔偿明细")
         ai_component.ai_optimize_text(q7_2, "q7_2_b",isDefendant=False)
         thisCase.reply_matters.append(
             {"type": "7. 是否主张违法解除劳动合同赔偿", "information": f"是☑ 明细：{q7_2}\n否☐"}
@@ -135,21 +135,21 @@ def claim(thisCase):
         )
 
     st.subheader("8. 本表未列明的其他请求")
-    q8_1 = st.text_area("本表未列明的其他请求", key="other_requests", placeholder="请输入其他请求")
+    q8_1 = st.text_area("本表未列明的其他请求（需要填写其他劳动争议相关请求，如名誉权损害赔偿、竞业限制补偿等，以及考虑提交与请求相关的证明材料）", key="other_requests", placeholder="请输入其他请求")
     ai_component.ai_optimize_text(q8_1, "q8_1_b",isDefendant=False)
     thisCase.reply_matters.append(
         {"type": "8. 本表未列明的其他请求", "information": q8_1}
     )
 
     st.subheader("9. 诉讼费用承担")
-    q9_1 = st.text_area("诉讼费用承担", key="legal_costs", placeholder="金额及具体主张")
+    q9_1 = st.text_area("诉讼费用承担（需要填写诉讼费用的金额及承担主张，通常要求被告承担全部诉讼费用，以及考虑提交诉讼费用缴纳凭证等证据）", key="legal_costs", placeholder="金额及具体主张")
     ai_component.ai_optimize_text(q9_1, "q9_1_b",isDefendant=False)
     thisCase.reply_matters.append(
         {"type": "9. 诉讼费用承担", "information": q9_1}
     )
 
     st.subheader("10. 是否已经申请诉前保全")
-    q10_1 = st.radio("是否已经申请诉前保全", ["否", "是"], key="preservation_claim", horizontal=True)
+    q10_1 = st.radio("请选择是否已向法院申请诉前财产保全措施（用于保障判决执行的财产冻结、查封等措施）", ["否", "是"], key="preservation_claim", horizontal=True)
     if q10_1 == "是":
         q10_2 = st.text_input("保全法院", key="preservation_apply_court", placeholder="请输入保全法院的名称")
         q10_3 = st.text_input("保全文书", key="preservation_apply_doc", placeholder="请输入保全文书信息")
@@ -218,7 +218,7 @@ def fact(thisCase):
             {"type": "3. 解除或终止劳动关系情况", "information": q13_t}
         )
 
-    st.subheader("4. 工伤情况")
+    st.subheader("4. 工伤情况(如有，无则留空)")
     q14_0 = st.radio("填写方式", ["模版填写", "自定义填写"], key="q14", horizontal=True)
     if q14_0 == "模版填写":
         q14_1 = st.text_input("发生工伤时间", key="injury_date", placeholder="请输入发生工伤时间")
@@ -235,7 +235,7 @@ def fact(thisCase):
             {"type": "4. 工伤情况", "information": q14_t}
         )
 
-    st.subheader("5. 劳动仲裁相关情况")
+    st.subheader("5. 劳动仲裁相关情况(如有，无则留空)")
     q15_0 = st.radio("填写方式", ["模版填写", "自定义填写"], key="q15", horizontal=True)
     if q15_0 == "模版填写":
         q15_1 = st.text_input("申请劳动仲裁时间", key="arbitration_date", placeholder="请输入申请劳动仲裁时间")
@@ -253,7 +253,7 @@ def fact(thisCase):
         )
 
     st.subheader("6. 其他相关情况")
-    q16_1 = st.text_area("其他可能与本案相关的情况", key="other_information", placeholder="请输入其他可能与本案相关的情况，如是否为农民工等")
+    q16_1 = st.text_area("其他可能与本案相关的情况", key="other_information", placeholder="请输入其他可能与本案相关的情况")
     ai_component.ai_optimize_text(q16_1, "q16_1_b",isDefendant=False)
     thisCase.reasons.append(
         {"type": "6. 其他相关情况", "information": q16_1}
