@@ -76,7 +76,7 @@ def st_date_input(label, key, value="today",min_value=None, max_value=None):
     """
     自定义日期选择组件，默认返回格式化后的日期（X年X月X日）。
     """
-    st.html(css)
+    # st.html(css)
     # 调用 st.date_input 获取用户选择的日期
     selected_date = st.date_input(label, value=value, key=key, max_value=max_value, min_value=min_value)
 
