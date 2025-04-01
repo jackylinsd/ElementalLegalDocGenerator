@@ -16,7 +16,7 @@ ai_component = AIComponent(CASE_TYPE)
 
 # 定义诉讼请求和依据的问题
 REPLY_QUESTIONS = [
-    "透文本金",
+    "透支本金",
     "利息、罚息、复利、滞纳金、违约金、手续费等",
     "是否主张担保权利",
     "是否主张实现债权的费用",
@@ -51,7 +51,7 @@ thisCase = CommonCasePlaintiff()
 
 
 def claim(thisCase):
-    st.subheader("1. 透文本金")
+    st.subheader("1. 透支本金")
     q1_1 = st_date_input("截至日期", key="principal_due_date")
     q1_2 = st.number_input("尚欠本金金额", key="principal_amount",
                            placeholder="请输入尚欠本金金额", min_value=0.0, step=0.01, format="%.2f")
@@ -62,7 +62,7 @@ def claim(thisCase):
         q1_4 = st.text_input(
             "外币币种", key="principal_currency_type", placeholder="请输入外币币种")
     thisCase.reply_matters.append(
-        {"type": "1. 透文本金", "information": f"截至{q1_1}止，尚欠本金{
+        {"type": "1. 透支本金", "information": f"截至{q1_1}止，尚欠本金{
             q1_2:.2f}元（{'人民币，下同；如为外币需特别注明' if not q1_3 else q1_4})"}
     )
 
