@@ -57,7 +57,7 @@ def claim(thisCase):
     q1_1 = st_date_input("截至日期", key="principal_due_date")
     q1_2 = st.number_input(
         "尚欠本金金额", key="principal_amount", placeholder="请输入尚欠本金金额")
-    q1_3 = st.radio("是否为外币", ["否", "是"],
+    q1_3 = st.radio('是否为外币？（如涉及外币交易请选择"是"）', ["否", "是"],
                     key="principal_currency", horizontal=True)
     if q1_3 == "是":
         q1_4 = st.text_input(
@@ -71,9 +71,9 @@ def claim(thisCase):
     q2_1 = st_date_input("截至日期", key="interest_due_date")
     q2_2 = st.number_input(
         "欠利息金额", key="interest_amount", placeholder="请输入欠利息金额")
-    q2_3 = st.text_area("计算方式", key="interest_calculation",
+    q2_3 = st.text_area("计算方式（需要填写利率标准、计息起止时间、计息基数、计算公式，以及考虑提交借款合同、银行利率证明等证据）", key="interest_calculation",
                         placeholder="请输入计算方式")
-    q2_4 = st.radio("是否请求支付至实际清偿之日止", [
+    q2_4 = st.radio('请选择是否请求债务人支付利息至实际清偿之日止（一般情况下应选择"是"）', [
                     "是", "否"], key="interest_until_payment", horizontal=True)
     thisCase.reply_matters.append(
         {"type": "2. 利息", "information": f"截至{q2_1}止，欠利息{q2_2}元；计算方式：{
@@ -81,10 +81,10 @@ def claim(thisCase):
     )
 
     st.subheader("3. 是否要求提前还款或解除合同")
-    q3_1 = st.radio("是否要求提前还款或解除合同", ["否", "是"],
+    q3_1 = st.radio("请选择是否依据违约条款要求债务人提前还款或解除合同（适用于债务人有违约行为且合同有相关约定的情形）", ["否", "是"],
                     key="early_repayment", horizontal=True)
     if q3_1 == "是":
-        q3_2 = st.radio("方式", ["提前还款（加速到期）", "解除合同"],
+        q3_2 = st.radio("请选择主张方式", ["提前还款（加速到期）", "解除合同"],
                         key="early_repayment_type")
         thisCase.reply_matters.append(
             {"type": "3. 是否要求提前还款或解除合同", "information": f"是☑ {
@@ -96,10 +96,10 @@ def claim(thisCase):
         )
 
     st.subheader("4. 是否主张担保权利")
-    q4_1 = st.radio("是否主张担保权利", ["否", "是"],
+    q4_1 = st.radio('请选择是否主张担保权利（如有抵押、质押、保证等担保措施时选择"是"）', ["否", "是"],
                     key="guarantee_rights", horizontal=True)
     if q4_1 == "是":
-        q4_2 = st.text_area("内容", key="guarantee_details",
+        q4_2 = st.text_area("内容（需要填写担保类型、担保人、担保物、担保范围、实现方式等，以及考虑提交担保合同、抵押登记证明等证据）", key="guarantee_details",
                             placeholder="请输入担保权利内容")
         thisCase.reply_matters.append(
             {"type": "4. 是否主张担保权利", "information": f"是☑ 内容：{q4_2}\n否☐"}
@@ -110,10 +110,10 @@ def claim(thisCase):
         )
 
     st.subheader("5. 是否主张实现债权的费用")
-    q5_1 = st.radio("是否主张实现债权的费用", ["否", "是"],
+    q5_1 = st.radio("请选择是否主张因实现债权产生的各项费用（如律师费、保全费、公证费等）", ["否", "是"],
                     key="legal_fees", horizontal=True)
     if q5_1 == "是":
-        q5_2 = st.text_area("明细", key="legal_fees_details",
+        q5_2 = st.text_area("明细（需要填写费用种类、金额、计算依据，以及考虑提交律师费发票、保全费收据、委托合同等证据）", key="legal_fees_details",
                             placeholder="请输入费用明细")
         thisCase.reply_matters.append(
             {"type": "5. 是否主张实现债权的费用", "information": f"是☑ 明细：{q5_2}\n否☐"}
@@ -124,21 +124,21 @@ def claim(thisCase):
         )
 
     st.subheader("6. 其他请求")
-    q6_1 = st.text_area("其他请求", key="other_requests", placeholder="请输入其他请求")
+    q6_1 = st.text_area("其他请求（需要填写本表未列明的其他诉讼请求，如违约金、赔偿金等，以及考虑提交相关证明材料）", key="other_requests", placeholder="请输入其他请求")
     ai_component.ai_optimize_text(q6_1,"q6_1_b")
     thisCase.reply_matters.append(
         {"type": "6. 其他请求", "information": q6_1}
     )
 
     st.subheader("7. 标的总额")
-    q7_1 = st.text_area("标的总额", key="total_amount", placeholder="请输入标的总额")
+    q7_1 = st.text_area("标的总额（需要填写本案诉讼请求的总金额及计算方式，作为计算诉讼费的依据）", key="total_amount", placeholder="请输入标的总额")
     thisCase.reply_matters.append(
         {"type": "7. 标的总额", "information": q7_1}
     )
 
     st.subheader("8. 请求依据")
-    q8_1 = st.text_area("合同约定", key="contract_terms", placeholder="请输入合同约定")
-    q8_2 = st.text_area("法律规定", key="legal_provisions", placeholder="请输入法律规定")
+    q8_1 = st.text_area("合同约定（需要填写借款合同中关于借款金额、期限、利率、违约责任等相关条款，以及考虑提交借款合同原件等证据）", key="contract_terms", placeholder="请输入合同约定")
+    q8_2 = st.text_area("法律规定（需要填写支持诉讼请求的法律法规条文，如《民法典》相关条款，以及司法解释等规定）", key="legal_provisions", placeholder="请输入法律规定")
     thisCase.reply_matters.append(
         {"type": "8. 请求依据", "information": f"合同约定：{q8_1}\n法律规定：{q8_2}"}
     )
