@@ -488,7 +488,7 @@ class SalesContractCaseFormatter(BaseCaseFormatter):
     """数据格式化器"""
 
     BaseCaseFormatter.case_type = CASE_TYPE
-
+    BaseCaseFormatter.isComplaint = True
     @staticmethod
     def format_case(thisCase):
         """将案件对象转换为适合文档模板的格式"""

@@ -341,6 +341,7 @@ class CreditCardCaseFormatter(BaseCaseFormatter):
     """数据格式化器"""
 
     BaseCaseFormatter.case_type = CASE_TYPE
+    BaseCaseFormatter.isComplaint = True
 
     @staticmethod
     def format_case(thisCase):
